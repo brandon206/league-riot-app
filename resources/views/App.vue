@@ -5,6 +5,7 @@
       <p>
           <router-link :to="{ name: 'home' }">Home</router-link>
           <router-link :to="{ name: 'hello' }">Hello</router-link>
+          <router-link :to="{ name: 'champions.index' }">Champions</router-link>
       </p>
 
       <div class="container">
