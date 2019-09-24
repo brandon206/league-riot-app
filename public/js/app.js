@@ -1899,13 +1899,34 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
 
 /* harmony default export */ __webpack_exports__["default"] = ({
   data: function data() {
     return {
       loading: false,
       champions: null,
-      error: null
+      error: null,
+      link: "http://ddragon.leagueoflegends.com/cdn/6.24.1/img/champion/",
+      splashLink: "http://ddragon.leagueoflegends.com/cdn/img/champion/loading/"
     };
   },
   created: function created() {
@@ -1919,7 +1940,7 @@ __webpack_require__.r(__webpack_exports__);
       this.loading = true;
       axios__WEBPACK_IMPORTED_MODULE_0___default.a.get('/api/champions').then(function (response) {
         _this.loading = false;
-        _this.champions = response.data;
+        _this.champions = response.data.data;
         console.log(response);
       });
     }
@@ -2495,40 +2516,50 @@ var render = function() {
     _vm.champions
       ? _c(
           "ul",
-          _vm._l(_vm.champions, function(ref) {
-            var id = ref.id
-            var name = ref.name
-            var image_url = ref.image_url
-            var big_image_url = ref.big_image_url
-            var attackdamage = ref.attackdamage
-            var hp = ref.hp
-            var movespeed = ref.movespeed
-            return _c("li", [
-              _c("strong", [_vm._v("Name:")]),
-              _vm._v(" " + _vm._s(name) + ",\n            "),
-              _c("strong", [_vm._v("Regular Image:")]),
-              _vm._v(" "),
-              _c("div", [
-                _c("img", {
-                  attrs: { src: image_url, alt: "image" + image_url }
-                })
-              ]),
-              _vm._v(" "),
-              _c("strong", [_vm._v("Big Image:")]),
-              _vm._v(" "),
-              _c("div", [
-                _c("img", {
-                  attrs: { src: big_image_url, alt: "big_image" + image_url }
-                })
-              ]),
-              _vm._v(" "),
-              _c("strong", [_vm._v("Base AD:")]),
-              _vm._v(" " + _vm._s(attackdamage) + "\n            "),
-              _c("strong", [_vm._v("Base HP:")]),
-              _vm._v(" " + _vm._s(hp) + "\n            "),
-              _c("strong", [_vm._v("Base Movespeed:")]),
-              _vm._v(" " + _vm._s(movespeed) + "\n        ")
-            ])
+          _vm._l(_vm.champions, function(champion) {
+            return _c(
+              "li",
+              { key: champion[_vm.key] },
+              [
+                _c("strong", [_vm._v("Name:")]),
+                _vm._v(" " + _vm._s(champion.id) + ",\n            "),
+                _c("strong", [_vm._v("Title:")]),
+                _vm._v(" " + _vm._s(champion.title) + ",\n            "),
+                _c("strong", [_vm._v("Description:")]),
+                _vm._v(" " + _vm._s(champion.blurb) + ",\n            "),
+                _c("strong", [_vm._v("Regular Image:")]),
+                _vm._v(" "),
+                _c("div", [
+                  _c("img", {
+                    attrs: {
+                      src: _vm.link + champion.image.full,
+                      alt: "image" + champion.image.full
+                    }
+                  })
+                ]),
+                _vm._v(" "),
+                _c("strong", [_vm._v("Big Image:")]),
+                _vm._v(" "),
+                _c("div", [
+                  _c("img", {
+                    attrs: {
+                      src: _vm.splashLink + champion.id + "_0.jpg",
+                      alt: "image" + champion.image.sprite
+                    }
+                  })
+                ]),
+                _vm._v(" "),
+                _vm._l(champion.tags, function(tag) {
+                  return _c("strong", { key: tag }, [_vm._v("Type:")])
+                }),
+                _vm._v(" " + _vm._s(_vm.tag) + "\n            "),
+                _c("strong", [_vm._v("Base HP:")]),
+                _vm._v(" " + _vm._s(champion.stats.hp) + "\n            "),
+                _c("strong", [_vm._v("Base Movespeed:")]),
+                _vm._v(" " + _vm._s(champion.stats.movespeed) + "\n        ")
+              ],
+              2
+            )
           }),
           0
         )
