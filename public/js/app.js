@@ -1918,6 +1918,12 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
+//
+//
+//
+//
+//
 
 /* harmony default export */ __webpack_exports__["default"] = ({
   data: function data() {
@@ -1925,7 +1931,8 @@ __webpack_require__.r(__webpack_exports__);
       loading: false,
       champions: null,
       error: null,
-      link: "http://ddragon.leagueoflegends.com/cdn/6.24.1/img/champion/",
+      search: '',
+      link: "http://ddragon.leagueoflegends.com/cdn/9.19.1/img/champion/",
       splashLink: "http://ddragon.leagueoflegends.com/cdn/img/champion/loading/"
     };
   },
@@ -1940,9 +1947,40 @@ __webpack_require__.r(__webpack_exports__);
       this.loading = true;
       axios__WEBPACK_IMPORTED_MODULE_0___default.a.get('/api/champions').then(function (response) {
         _this.loading = false;
-        _this.champions = response.data.data;
-        console.log(response);
+        _this.champions = Object.values(response.data.data);
+        console.log(_this.champions);
       });
+    } // chunkChampionData() {
+    //     if(!this.loading){
+    //         let tempArray = [];
+    //         for(var i = 0; i < this.champions.length; i++) {
+    //             tempArray.push(this.champions[i]);
+    //             if( i % 25) {
+    //                 this.championsChunks.push(tempArray);
+    //             }
+    //         }
+    //         console.log(this.championsChunks);
+    //     }
+    // },
+    // chunkResponseData(array, chunk) {
+    //     let i,j,temparray;
+    //     for(i = 0, j = array.length; i < j; i+=chunk) {
+    //         temparray = array.slice(i,i+chunk);
+    //         array.push(temparray);
+    //     }
+    // },
+
+  },
+  computed: {
+    filteredChampions: function filteredChampions() {
+      var _this2 = this;
+
+      if (this.loading === false) {
+        console.log(this.champions);
+        return this.champions.filter(function (champ) {
+          return champ.id.toLowerCase().includes(_this2.search.toLowerCase());
+        });
+      }
     }
   }
 });
@@ -2501,6 +2539,29 @@ var render = function() {
   var _h = _vm.$createElement
   var _c = _vm._self._c || _h
   return _c("div", { staticClass: "champions" }, [
+    _c("div", { staticClass: "search-wrapper bg-red-400" }, [
+      _c("input", {
+        directives: [
+          {
+            name: "model",
+            rawName: "v-model",
+            value: _vm.search,
+            expression: "search"
+          }
+        ],
+        attrs: { type: "text", placeholder: "Search title.." },
+        domProps: { value: _vm.search },
+        on: {
+          input: function($event) {
+            if ($event.target.composing) {
+              return
+            }
+            _vm.search = $event.target.value
+          }
+        }
+      })
+    ]),
+    _vm._v(" "),
     _vm.loading
       ? _c("div", { staticClass: "loading" }, [
           _vm._v("\n        Loading...\n    ")
@@ -2516,10 +2577,10 @@ var render = function() {
     _vm.champions
       ? _c(
           "ul",
-          _vm._l(_vm.champions, function(champion) {
+          _vm._l(_vm.filteredChampions, function(champion) {
             return _c(
               "li",
-              { key: champion[_vm.key] },
+              { key: champion.key },
               [
                 _c("strong", [_vm._v("Name:")]),
                 _vm._v(" " + _vm._s(champion.id) + ",\n            "),
@@ -2538,21 +2599,12 @@ var render = function() {
                   })
                 ]),
                 _vm._v(" "),
-                _c("strong", [_vm._v("Big Image:")]),
-                _vm._v(" "),
-                _c("div", [
-                  _c("img", {
-                    attrs: {
-                      src: _vm.splashLink + champion.id + "_0.jpg",
-                      alt: "image" + champion.image.sprite
-                    }
-                  })
-                ]),
-                _vm._v(" "),
                 _vm._l(champion.tags, function(tag) {
-                  return _c("strong", { key: tag }, [_vm._v("Type:")])
+                  return _c("div", { key: tag }, [
+                    _c("strong", [_vm._v(_vm._s(tag))])
+                  ])
                 }),
-                _vm._v(" " + _vm._s(_vm.tag) + "\n            "),
+                _vm._v(" "),
                 _c("strong", [_vm._v("Base HP:")]),
                 _vm._v(" " + _vm._s(champion.stats.hp) + "\n            "),
                 _c("strong", [_vm._v("Base Movespeed:")]),
