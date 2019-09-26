@@ -1,5 +1,8 @@
 <template>
     <div class="champions">
+        <div class="search-wrapper bg-red-400">
+            <input type="text" v-model="search" placeholder="Search title.."/>
+        </div>
         <div class="loading" v-if="loading">
             Loading...
         </div>
@@ -26,7 +29,7 @@
             </li>
         </ul> -->
         <ul v-if="champions">
-            <li v-for="champion in champions" :key=champion[key]>
+            <li v-for="champion in filteredChampions" :key=champion.key>
                 <strong>Name:</strong> {{ champion.id }},
                 <strong>Title:</strong> {{ champion.title }},
                 <strong>Description:</strong> {{ champion.blurb }},
@@ -34,12 +37,15 @@
                 <div>
                     <img :src="link + champion.image.full" :alt="`image${champion.image.full}`">
                 </div>
-                <strong>Big Image:</strong>
-                <div>
+                <!-- <strong>Big Image:</strong>
+                <div v-if="champion.image.sprite == 'champion0.png'">
                     <img :src="splashLink + champion.id + '_0.jpg'" :alt="`image${champion.image.sprite}`">
                 </div>
-                
-                <strong v-for="tag in champion.tags" :key=tag>Type:</strong> {{ tag }}
+                 -->
+                <!-- <strong v-for="tag in champion.tags" :key=tag>Type:</strong> {{ tag }} -->
+                <div v-for="tag in champion.tags" :key=tag>
+                <strong>{{ tag }}</strong>
+                </div>
                 <strong>Base HP:</strong> {{ champion.stats.hp }}
                 <strong>Base Movespeed:</strong> {{ champion.stats.movespeed }}
             </li>
@@ -54,7 +60,8 @@ export default {
             loading: false,
             champions: null,
             error: null,
-            link: "http://ddragon.leagueoflegends.com/cdn/6.24.1/img/champion/",
+            search: '',
+            link: "http://ddragon.leagueoflegends.com/cdn/9.19.1/img/champion/",
             splashLink: "http://ddragon.leagueoflegends.com/cdn/img/champion/loading/",
         };
     },
@@ -69,9 +76,38 @@ export default {
                 .get('/api/champions')
                 .then(response => {
                     this.loading = false;
-                    this.champions = response.data.data;
-                    console.log(response);
+                    this.champions = Object.values(response.data.data);
+                    console.log(this.champions);
                 });
+        },
+        // chunkChampionData() {
+        //     if(!this.loading){
+        //         let tempArray = [];
+        //         for(var i = 0; i < this.champions.length; i++) {
+        //             tempArray.push(this.champions[i]);
+        //             if( i % 25) {
+        //                 this.championsChunks.push(tempArray);
+        //             }
+        //         }
+        //         console.log(this.championsChunks);
+        //     }
+        // },
+        // chunkResponseData(array, chunk) {
+        //     let i,j,temparray;
+        //     for(i = 0, j = array.length; i < j; i+=chunk) {
+        //         temparray = array.slice(i,i+chunk);
+        //         array.push(temparray);
+        //     }
+        // },
+    },
+    computed: {
+        filteredChampions() {
+            if (this.loading === false) {
+                console.log(this.champions);
+                return this.champions.filter(champ => {
+                    return champ.id.toLowerCase().includes(this.search.toLowerCase())
+                })
+            }
         }
     }
 }
