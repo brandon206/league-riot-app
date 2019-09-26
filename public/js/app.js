@@ -1924,8 +1924,31 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+ // import Dropdown from './Dropdown';
 
 /* harmony default export */ __webpack_exports__["default"] = ({
+  // components: {
+  //     'dropdown': Dropdown,
+  // },
   data: function data() {
     return {
       loading: false,
@@ -1933,7 +1956,16 @@ __webpack_require__.r(__webpack_exports__);
       error: null,
       search: '',
       link: "http://ddragon.leagueoflegends.com/cdn/9.19.1/img/champion/",
-      splashLink: "http://ddragon.leagueoflegends.com/cdn/img/champion/loading/"
+      splashLink: "http://ddragon.leagueoflegends.com/cdn/img/champion/loading/",
+      // championTypeOptions: {
+      //     'Fighter': 'Fighter',
+      //     'Tank': 'Tank',
+      //     'Mage': 'Mage',
+      //     'Assassin': 'Assassin',
+      //     'Support': 'Support',
+      //     'Marksman': 'Marksman',
+      // },
+      selectedType: 'All'
     };
   },
   created: function created() {
@@ -1972,14 +2004,55 @@ __webpack_require__.r(__webpack_exports__);
 
   },
   computed: {
+    // filteredChampions() {
+    //     if (this.loading === false) {
+    //         console.log(this.champions);
+    //         return this.champions.filter(champ => {
+    //             return champ.id.toLowerCase().includes(this.search.toLowerCase())
+    //         })
+    //     }
+    // },
+    // filteredChampionTypes() {
+    //     if (this.loading === false) {
+    //         if (this.search != '') {
+    //             return this.champions.filter(champ => {
+    //                 return champ.id.toLowerCase().includes(this.search.toLowerCase())
+    //             });
+    //         } else {
+    //             let category = this.selectedType;
+    //         if(category === "All") {
+    //             return this.champions;
+    //         } else {
+    //             let championTagsAsString;
+    //             return this.champions.filter(function(champion) {
+    //                 championTagsAsString = champion.tags.join();
+    //                 return championTagsAsString.includes(category);
+    //             });
+    //         }
+    //         }
+    //     }
+    // },
     filteredChampions: function filteredChampions() {
       var _this2 = this;
 
-      if (this.loading === false) {
-        console.log(this.champions);
-        return this.champions.filter(function (champ) {
-          return champ.id.toLowerCase().includes(_this2.search.toLowerCase());
-        });
+      if (this.loading === false && this.champions) {
+        var filtered = this.champions;
+
+        if (this.search) {
+          filtered = this.champions.filter(function (champ) {
+            return champ.id.toLowerCase().includes(_this2.search.toLowerCase());
+          });
+        }
+
+        if (this.selectedType !== "All") {
+          var championTagsAsString;
+          filtered = filtered.filter(function (champ) {
+            championTagsAsString = champ.tags.join();
+            return championTagsAsString.includes(_this2.selectedType);
+          });
+        }
+
+        return filtered;
       }
     }
   }
@@ -2539,27 +2612,33 @@ var render = function() {
   var _h = _vm.$createElement
   var _c = _vm._self._c || _h
   return _c("div", { staticClass: "champions" }, [
-    _c("div", { staticClass: "search-wrapper bg-red-400" }, [
-      _c("input", {
-        directives: [
-          {
-            name: "model",
-            rawName: "v-model",
-            value: _vm.search,
-            expression: "search"
-          }
-        ],
-        attrs: { type: "text", placeholder: "Search title.." },
-        domProps: { value: _vm.search },
-        on: {
-          input: function($event) {
-            if ($event.target.composing) {
-              return
+    _c("div", { staticClass: "search-wrapper" }, [
+      _c("form", { staticClass: "w-full max-w-sm" }, [
+        _c("div", { staticClass: "flex items-center" }, [
+          _c("input", {
+            directives: [
+              {
+                name: "model",
+                rawName: "v-model",
+                value: _vm.search,
+                expression: "search"
+              }
+            ],
+            staticClass:
+              "bg-white focus:outline-none focus:shadow-outline border border-gray-300 rounded-lg py-2 px-4 block w-full appearance-none leading-normal",
+            attrs: { type: "text", placeholder: "Search Champions" },
+            domProps: { value: _vm.search },
+            on: {
+              input: function($event) {
+                if ($event.target.composing) {
+                  return
+                }
+                _vm.search = $event.target.value
+              }
             }
-            _vm.search = $event.target.value
-          }
-        }
-      })
+          })
+        ])
+      ])
     ]),
     _vm._v(" "),
     _vm.loading
@@ -2574,6 +2653,52 @@ var render = function() {
         ])
       : _vm._e(),
     _vm._v(" "),
+    _c("div", { staticClass: "inline-block relative w-64" }, [
+      _c(
+        "select",
+        {
+          directives: [
+            {
+              name: "model",
+              rawName: "v-model",
+              value: _vm.selectedType,
+              expression: "selectedType"
+            }
+          ],
+          staticClass:
+            "dropdownFilter block appearance-none w-full bg-white border border-gray-400 hover:border-gray-500 px-4 py-2 pr-8 rounded shadow leading-tight focus:outline-none focus:shadow-outline",
+          on: {
+            change: function($event) {
+              var $$selectedVal = Array.prototype.filter
+                .call($event.target.options, function(o) {
+                  return o.selected
+                })
+                .map(function(o) {
+                  var val = "_value" in o ? o._value : o.value
+                  return val
+                })
+              _vm.selectedType = $event.target.multiple
+                ? $$selectedVal
+                : $$selectedVal[0]
+            }
+          }
+        },
+        [
+          _c("option", { attrs: { value: "All" } }, [_vm._v(" All")]),
+          _vm._v(" "),
+          _c("option", { attrs: { value: "Tank" } }, [_vm._v(" Tank")]),
+          _vm._v(" "),
+          _c("option", { attrs: { value: "Marksman" } }, [_vm._v(" Marksman")]),
+          _vm._v(" "),
+          _c("option", { attrs: { value: "Mage" } }, [_vm._v(" Mage")]),
+          _vm._v(" "),
+          _c("option", { attrs: { value: "Fighter" } }, [_vm._v(" Fighter")]),
+          _vm._v(" "),
+          _c("option", { attrs: { value: "Assassin" } }, [_vm._v(" Assassin")])
+        ]
+      )
+    ]),
+    _vm._v(" "),
     _vm.champions
       ? _c(
           "ul",
@@ -2586,8 +2711,6 @@ var render = function() {
                 _vm._v(" " + _vm._s(champion.id) + ",\n            "),
                 _c("strong", [_vm._v("Title:")]),
                 _vm._v(" " + _vm._s(champion.title) + ",\n            "),
-                _c("strong", [_vm._v("Description:")]),
-                _vm._v(" " + _vm._s(champion.blurb) + ",\n            "),
                 _c("strong", [_vm._v("Regular Image:")]),
                 _vm._v(" "),
                 _c("div", [
