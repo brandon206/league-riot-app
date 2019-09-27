@@ -7,6 +7,7 @@ import App from '../views/App'
 import Hello from '../views/Hello'
 import Home from '../views/Home'
 import ChampionsIndex from '../views/ChampionsIndex'
+import SoloChampionIndex from '../views/SoloChampionIndex'
 
 const router = new VueRouter({
     mode: 'history',
@@ -26,6 +27,11 @@ const router = new VueRouter({
             name: 'champions.index',
             component: ChampionsIndex,
         },
+        {
+            path:'/champions/:id',
+            name: 'champions.id.index',
+            component: SoloChampionIndex,
+        }
     ],
 });
 
