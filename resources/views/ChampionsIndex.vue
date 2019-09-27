@@ -6,8 +6,6 @@
                     <input v-model="search" class="bg-white focus:outline-none focus:shadow-outline border border-gray-300 rounded-lg py-2 px-4 block w-full appearance-none leading-normal" type="text" placeholder="Search Champions">
                 </div>
             </form>
-            <!-- <input class="bg-white focus:outline-none focus:shadow-outline border border-gray-300 rounded-lg py-2 px-4 block w-full appearance-none leading-normal" type="email" placeholder="jane@example.com"> -->
-            <!-- <input type="text" v-model="search" placeholder="Search title.."/> -->
         </div>
         <div class="loading" v-if="loading">
             Loading...
@@ -25,43 +23,16 @@
                 <option value="Assassin"> Assassin</option>
             </select>
         </div>
-        
-            
-        <!-- <div class="filter">
-            <label for="component-dropdown">Component-based dropdown: </label>
-            <dropdown id="component-dropdown" :options="championTypeOptions" v-model="selectedChampionType"></dropdown>
-        </div> -->
-        <!-- <ul v-if="champions">
-            <li v-for="{ id, name, image_url, big_image_url, attackdamage, hp, movespeed } in champions">
-                <strong>Name:</strong> {{ name }},
-                <strong>Regular Image:</strong>
-                <div>
-                    <img :src="image_url" :alt="`image${image_url}`">
-                </div>
-                <strong>Big Image:</strong>
-                <div>
-                    <img :src="big_image_url" :alt="`big_image${image_url}`">
-                </div>
-                
-                <strong>Base AD:</strong> {{ attackdamage }}
-                <strong>Base HP:</strong> {{ hp }}
-                <strong>Base Movespeed:</strong> {{ movespeed }}
-            </li>
-        </ul> -->
         <ul v-if="champions">
             <li v-for="champion in filteredChampions" :key=champion.key>
                 <strong>Name:</strong> {{ champion.id }},
                 <strong>Title:</strong> {{ champion.title }},
                 <strong>Regular Image:</strong>
-                <div>
-                    <img :src="link + champion.image.full" :alt="`image${champion.image.full}`">
+                <div style="width: max-content">
+                    <router-link :to="{ name: 'champions.id.index', params: {id: champion.id} }">
+                        <img style="margin: 0" :src="link + champion.image.full" :alt="`image${champion.image.full}`">
+                    </router-link>
                 </div>
-                <!-- <strong>Big Image:</strong>
-                <div v-if="champion.image.sprite == 'champion0.png'">
-                    <img :src="splashLink + champion.id + '_0.jpg'" :alt="`image${champion.image.sprite}`">
-                </div>
-                 -->
-                <!-- <strong v-for="tag in champion.tags" :key=tag>Type:</strong> {{ tag }} -->
                 <div v-for="tag in champion.tags" :key=tag>
                 <strong>{{ tag }}</strong>
                 </div>
@@ -73,12 +44,8 @@
 </template>
 <script>
 import axios from 'axios';
-// import Dropdown from './Dropdown';
 
 export default {
-    // components: {
-    //     'dropdown': Dropdown,
-    // },
     data() {
         return {
             loading: false,
@@ -87,14 +54,6 @@ export default {
             search: '',
             link: "http://ddragon.leagueoflegends.com/cdn/9.19.1/img/champion/",
             splashLink: "http://ddragon.leagueoflegends.com/cdn/img/champion/loading/",
-            // championTypeOptions: {
-            //     'Fighter': 'Fighter',
-            //     'Tank': 'Tank',
-            //     'Mage': 'Mage',
-            //     'Assassin': 'Assassin',
-            //     'Support': 'Support',
-            //     'Marksman': 'Marksman',
-            // },
             selectedType: 'All',
         };
     },
@@ -110,58 +69,11 @@ export default {
                 .then(response => {
                     this.loading = false;
                     this.champions = Object.values(response.data.data);
-                    console.log(this.champions);
+                    // console.log(this.champions);
                 });
         },
-        // chunkChampionData() {
-        //     if(!this.loading){
-        //         let tempArray = [];
-        //         for(var i = 0; i < this.champions.length; i++) {
-        //             tempArray.push(this.champions[i]);
-        //             if( i % 25) {
-        //                 this.championsChunks.push(tempArray);
-        //             }
-        //         }
-        //         console.log(this.championsChunks);
-        //     }
-        // },
-        // chunkResponseData(array, chunk) {
-        //     let i,j,temparray;
-        //     for(i = 0, j = array.length; i < j; i+=chunk) {
-        //         temparray = array.slice(i,i+chunk);
-        //         array.push(temparray);
-        //     }
-        // },
     },
     computed: {
-        // filteredChampions() {
-        //     if (this.loading === false) {
-        //         console.log(this.champions);
-        //         return this.champions.filter(champ => {
-        //             return champ.id.toLowerCase().includes(this.search.toLowerCase())
-        //         })
-        //     }
-        // },
-        // filteredChampionTypes() {
-        //     if (this.loading === false) {
-        //         if (this.search != '') {
-        //             return this.champions.filter(champ => {
-        //                 return champ.id.toLowerCase().includes(this.search.toLowerCase())
-        //             });
-        //         } else {
-        //             let category = this.selectedType;
-        //         if(category === "All") {
-        //             return this.champions;
-        //         } else {
-        //             let championTagsAsString;
-        //             return this.champions.filter(function(champion) {
-        //                 championTagsAsString = champion.tags.join();
-        //                 return championTagsAsString.includes(category);
-        //             });
-        //         }
-        //         }
-        //     }
-        // },
         filteredChampions() {
             if (this.loading === false && this.champions) {
                 let filtered = this.champions;
