@@ -1,3 +1,3 @@
 <template>
-  <p>This is the homepage!</p>
+  <p>Welcome to Summoner's Domain!</p>
 </template>

@@ -4,7 +4,7 @@
 
       <p>
           <router-link :to="{ name: 'home' }">Home</router-link>
-          <router-link :to="{ name: 'hello' }">Hello</router-link>
+          <router-link :to="{ name: 'summonersearch.index' }">Summoner Search</router-link>
           <router-link :to="{ name: 'champions.index' }">Champions</router-link>
           <!-- <router-link :to="{ name: 'champions.id.index', params: {id: 'Aatrox'} }">Champion</router-link> -->
       </p>
