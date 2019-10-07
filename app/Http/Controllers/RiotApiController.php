@@ -25,10 +25,20 @@ class RiotApiController extends Controller
         $client = new Client();
         // dd($id);
         // dd('http://ddragon.leagueoflegends.com/cdn/9.3.1/data/en_US/champion/'.$id.'.json');
-        $response = $client->request('GET', 'http://ddragon.leagueoflegends.com/cdn/9.3.1/data/en_US/champion/'.$id.'.json');
+        $response = $client->request('GET', 'http://ddragon.leagueoflegends.com/cdn/9.13.1/data/en_US/champion/'.$id.'.json');
         $statusCode = $response->getStatusCode();
         $body = $response->getBody()->getContents();
 
     	return $body;
+    }
+
+    // Riot only provides temporary keys you'll need to change this every 24 hours until we get approval
+    public function getSummoner($summonerName) {
+        $client = new Client();
+        $response = $client->request('GET', 'https://na1.api.riotgames.com/lol/summoner/v4/summoners/by-name/Beautiful%20Noona?api_key=RGAPI-57d021a3-4831-47e0-8392-689e0b301952');
+        $statusCode = $response->getStatusCode();
+        $body = $response->getBody()->getContents();
+
+        return $body;
     }
 }
