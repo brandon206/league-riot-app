@@ -19,4 +19,4 @@ use Illuminate\Http\Request;
 
 Route::get('champions', 'RiotApiController@index');
 Route::get('champions/{id}', 'RiotApiController@getChampion');
-Route::get('summoner/{name}', 'RiotApiController@getSummoner');
+Route::get('summoner/{summonerName}', 'RiotApiController@getSummoner');

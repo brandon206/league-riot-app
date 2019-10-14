@@ -1991,8 +1991,16 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
+//
+//
 /* harmony default export */ __webpack_exports__["default"] = ({
-  props: ['placeholderText']
+  props: ['placeholderText'],
+  data: function data() {
+    return {
+      search: ''
+    };
+  }
 });
 
 /***/ }),
@@ -2097,15 +2105,6 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
-//
-//
-//
-//
-//
-//
-//
-//
-//
 
 
 /* harmony default export */ __webpack_exports__["default"] = ({
@@ -2118,14 +2117,13 @@ __webpack_require__.r(__webpack_exports__);
       champion: null,
       error: null,
       id: null,
-      search: '' // imageLink: 'http://ddragon.leagueoflegends.com/cdn/img/champion/loading/',
+      summoner: '' // imageLink: 'http://ddragon.leagueoflegends.com/cdn/img/champion/loading/',
 
     };
   },
   created: function created() {
     console.log(this.$route.params.id);
     this.id = this.$route.params.id;
-    this.fetchData();
   },
   computed: {
     getImageLink: function getImageLink(link) {
@@ -2133,16 +2131,24 @@ __webpack_require__.r(__webpack_exports__);
     }
   },
   methods: {
-    fetchData: function fetchData() {
+    handleSearchClick: function handleSearchClick(summonerName) {
+      console.log('this be the summoner\'s name: ', summonerName);
+      this.fetchSummoner(summonerName);
+    },
+    fetchSummoner: function fetchSummoner(summonerName) {
       var _this = this;
 
-      // console.log(`/api/champions/${this.id}`);
       this.error = this.summoner = null;
       this.loading = true;
-      axios__WEBPACK_IMPORTED_MODULE_0___default.a.get("/api/summoner/Beautiful Noona").then(function (response) {
+      console.log(summonerName);
+      axios__WEBPACK_IMPORTED_MODULE_0___default.a.get("/api/summoner/".concat(summonerName)).then(function (response) {
         _this.loading = false;
         _this.summoner = response.data;
         console.log(_this.summoner);
+      })["catch"](function (error) {
+        _this.loading = false;
+        _this.error = error.response.data.message || error.message;
+        console.log(_this.error);
       });
     }
   }
@@ -2920,7 +2926,22 @@ var render = function() {
               _vm.search = $event.target.value
             }
           }
-        })
+        }),
+        _vm._v(" "),
+        _c(
+          "button",
+          {
+            staticClass:
+              "bg-blue-500 hover:bg-blue-400 text-white font-bold py-2 px-4 border-b-4 border-blue-700 hover:border-blue-500 rounded",
+            attrs: { type: "button" },
+            on: {
+              click: function($event) {
+                return _vm.$emit("clickedSearch", _vm.search)
+              }
+            }
+          },
+          [_vm._v("\n                Button\n            ")]
+        )
       ])
     ])
   ])
@@ -3010,9 +3031,24 @@ var render = function() {
           ])
         : _vm._e(),
       _vm._v(" "),
-      _c("SearchBar", { attrs: { placeholderText: "Search Summoner" } })
+      [
+        _c("SearchBar", {
+          attrs: { placeholderText: "Search Summoner" },
+          on: { clickedSearch: _vm.handleSearchClick }
+        })
+      ],
+      _vm._v(" "),
+      _vm.summoner
+        ? _c("ul", [
+            _c("li", [
+              _c("div", [_vm._v(_vm._s(_vm.summoner.name))]),
+              _vm._v(" "),
+              _c("div", [_vm._v(_vm._s(_vm.summoner.summonerLevel))])
+            ])
+          ])
+        : _vm._e()
     ],
-    1
+    2
   )
 }
 var staticRenderFns = []
