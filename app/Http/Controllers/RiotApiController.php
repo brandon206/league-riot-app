@@ -35,8 +35,19 @@ class RiotApiController extends Controller
     // Riot only provides temporary keys you'll need to change this every 24 hours until we get approval
     public function getSummoner($summonerName) {
         $client = new Client();
-        $api_key = env('RIOT_API_KEY', 'default_api_key');
+        $api_key = env("RIOT_API_KEY", 'default_api_key');
         $response = $client->request('GET', 'https://na1.api.riotgames.com/lol/summoner/v4/summoners/by-name/'.$summonerName.'?api_key='.$api_key);
+        $statusCode = $response->getStatusCode();
+        $body = $response->getBody()->getContents();
+
+        return $body;
+    }
+
+    // Use encryptId to get Summoner specific data
+    public function getSummonerData($encryptId) {
+        $client = new Client();
+        $api_key = env('RIOT_API_KEY', 'default_api_key');
+        $response = $client->request('GET', 'https://na1.api.riotgames.com/lol/league/v4/entries/by-summoner/'.$encryptId.'?api_key='.$api_key);
         $statusCode = $response->getStatusCode();
         $body = $response->getBody()->getContents();
 

@@ -3,6 +3,7 @@
         <div class="loading" v-if="loading">
             Loading...
         </div>
+        <button type="button" class="bg-blue-500 hover:bg-blue-400 text-white font-bold py-2 px-4 border-b-4 border-blue-700 hover:border-blue-500 rounded" @click="goBack"> Go Back </button>
         <ul v-if="champion">
             <li v-for="champ in champion" :key=champ.key>
                 <div>{{  champ.id  }}</div>
@@ -41,6 +42,9 @@ export default {
         }
     },
     methods: {
+        goBack() {
+            this.$router.go(-1);
+        },
         fetchData() {
             // console.log(`/api/champions/${this.id}`);
             this.error = this.champion = null;

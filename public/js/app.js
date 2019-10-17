@@ -1930,6 +1930,7 @@ __webpack_require__.r(__webpack_exports__);
   },
   created: function created() {
     this.fetchData();
+    console.log("http://ddragon.leagueoflegends.com/cdn/9.19.1/img/champion/");
   },
   methods: {
     fetchData: function fetchData() {
@@ -2035,6 +2036,7 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
 
 /* harmony default export */ __webpack_exports__["default"] = ({
   data: function data() {
@@ -2057,6 +2059,9 @@ __webpack_require__.r(__webpack_exports__);
     }
   },
   methods: {
+    goBack: function goBack() {
+      this.$router.go(-1);
+    },
     fetchData: function fetchData() {
       var _this = this;
 
@@ -2105,6 +2110,15 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
+//
+//
 
 
 /* harmony default export */ __webpack_exports__["default"] = ({
@@ -2117,7 +2131,9 @@ __webpack_require__.r(__webpack_exports__);
       champion: null,
       error: null,
       id: null,
-      summoner: '' // imageLink: 'http://ddragon.leagueoflegends.com/cdn/img/champion/loading/',
+      summoner: '',
+      summonerData: {},
+      encryptId: '' // imageLink: 'http://ddragon.leagueoflegends.com/cdn/img/champion/loading/',
 
     };
   },
@@ -2142,13 +2158,32 @@ __webpack_require__.r(__webpack_exports__);
       this.loading = true;
       console.log(summonerName);
       axios__WEBPACK_IMPORTED_MODULE_0___default.a.get("/api/summoner/".concat(summonerName)).then(function (response) {
-        _this.loading = false;
+        // this.loading = false;
         _this.summoner = response.data;
         console.log(_this.summoner);
+        _this.encryptId = response.data.id;
+
+        _this.fetchSummonerData(_this.encryptId);
       })["catch"](function (error) {
         _this.loading = false;
         _this.error = error.response.data.message || error.message;
         console.log(_this.error);
+      });
+    },
+    fetchSummonerData: function fetchSummonerData(encryptId) {
+      var _this2 = this;
+
+      this.error = this.summonerData = null;
+      this.loading = true;
+      console.log(encryptId);
+      axios__WEBPACK_IMPORTED_MODULE_0___default.a.get("/api/summonerData/".concat(encryptId)).then(function (response) {
+        _this2.loading = false;
+        _this2.summonerData = response.data;
+        console.log(response.data);
+      })["catch"](function (error) {
+        _this2.loading = false;
+        _this2.error = error.response.data.message || error.message;
+        console.log(_this2.error);
       });
     }
   }
@@ -2827,7 +2862,7 @@ var render = function() {
                         _c("img", {
                           staticStyle: { margin: "0" },
                           attrs: {
-                            src: _vm.link + champion.image.full,
+                            src: "" + _vm.link + champion.image.full,
                             alt: "image" + champion.image.full
                           }
                         })
@@ -2903,47 +2938,59 @@ var render = function() {
   var _h = _vm.$createElement
   var _c = _vm._self._c || _h
   return _c("div", { staticClass: "search-wrapper" }, [
-    _c("form", { staticClass: "w-full max-w-sm" }, [
-      _c("div", { staticClass: "flex items-center" }, [
-        _c("input", {
-          directives: [
-            {
-              name: "model",
-              rawName: "v-model",
-              value: _vm.search,
-              expression: "search"
-            }
-          ],
-          staticClass:
-            "bg-white focus:outline-none focus:shadow-outline border border-gray-300 rounded-lg py-2 px-4 block w-full appearance-none leading-normal",
-          attrs: { type: "text", placeholder: _vm.placeholderText },
-          domProps: { value: _vm.search },
-          on: {
-            input: function($event) {
-              if ($event.target.composing) {
-                return
-              }
-              _vm.search = $event.target.value
-            }
+    _c(
+      "form",
+      {
+        staticClass: "w-full max-w-sm",
+        on: {
+          submit: function($event) {
+            $event.preventDefault()
+            return _vm.$emit("clickedSearch", _vm.search)
           }
-        }),
-        _vm._v(" "),
-        _c(
-          "button",
-          {
+        }
+      },
+      [
+        _c("div", { staticClass: "flex items-center" }, [
+          _c("input", {
+            directives: [
+              {
+                name: "model",
+                rawName: "v-model",
+                value: _vm.search,
+                expression: "search"
+              }
+            ],
             staticClass:
-              "bg-blue-500 hover:bg-blue-400 text-white font-bold py-2 px-4 border-b-4 border-blue-700 hover:border-blue-500 rounded",
-            attrs: { type: "button" },
+              "bg-white focus:outline-none focus:shadow-outline border border-gray-300 rounded-lg py-2 px-4 block w-full appearance-none leading-normal",
+            attrs: { type: "text", placeholder: _vm.placeholderText },
+            domProps: { value: _vm.search },
             on: {
-              click: function($event) {
-                return _vm.$emit("clickedSearch", _vm.search)
+              input: function($event) {
+                if ($event.target.composing) {
+                  return
+                }
+                _vm.search = $event.target.value
               }
             }
-          },
-          [_vm._v("\n                Button\n            ")]
-        )
-      ])
-    ])
+          }),
+          _vm._v(" "),
+          _c(
+            "button",
+            {
+              staticClass:
+                "bg-blue-500 hover:bg-blue-400 text-white font-bold py-2 px-4 border-b-4 border-blue-700 hover:border-blue-500 rounded",
+              attrs: { type: "button" },
+              on: {
+                click: function($event) {
+                  return _vm.$emit("clickedSearch", _vm.search)
+                }
+              }
+            },
+            [_vm._v("\n                Button\n            ")]
+          )
+        ])
+      ]
+    )
   ])
 }
 var staticRenderFns = []
@@ -2974,6 +3021,17 @@ var render = function() {
           _vm._v("\n        Loading...\n    ")
         ])
       : _vm._e(),
+    _vm._v(" "),
+    _c(
+      "button",
+      {
+        staticClass:
+          "bg-blue-500 hover:bg-blue-400 text-white font-bold py-2 px-4 border-b-4 border-blue-700 hover:border-blue-500 rounded",
+        attrs: { type: "button" },
+        on: { click: _vm.goBack }
+      },
+      [_vm._v(" Go Back ")]
+    ),
     _vm._v(" "),
     _vm.champion
       ? _c(
@@ -3038,7 +3096,7 @@ var render = function() {
         })
       ],
       _vm._v(" "),
-      _vm.summoner
+      _vm.summoner && _vm.summonerData
         ? _c("ul", [
             _c("li", [
               _c("div", [_vm._v(_vm._s(_vm.summoner.name))]),
@@ -3046,6 +3104,30 @@ var render = function() {
               _c("div", [_vm._v(_vm._s(_vm.summoner.summonerLevel))])
             ])
           ])
+        : _vm._e(),
+      _vm._v(" "),
+      _vm.summonerData
+        ? _c(
+            "ul",
+            _vm._l(_vm.summonerData, function(summonerRanks) {
+              return _c("li", { key: summonerRanks.leagueId }, [
+                _c("div", [_vm._v(_vm._s(summonerRanks.queueType))]),
+                _vm._v(" "),
+                _c("div", [
+                  _vm._v(_vm._s(summonerRanks.tier + " " + summonerRanks.rank))
+                ]),
+                _vm._v(" "),
+                _c("div", [
+                  _vm._v(_vm._s("LP: " + summonerRanks.leaguePoints))
+                ]),
+                _vm._v(" "),
+                _c("div", [_vm._v(_vm._s("Wins: " + summonerRanks.wins))]),
+                _vm._v(" "),
+                _c("div", [_vm._v(_vm._s("Loses: " + summonerRanks.losses))])
+              ])
+            }),
+            0
+          )
         : _vm._e()
     ],
     2
