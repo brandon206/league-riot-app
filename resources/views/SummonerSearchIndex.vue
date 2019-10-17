@@ -7,10 +7,19 @@
             <SearchBar @clickedSearch="handleSearchClick" :placeholderText="'Search Summoner'">
             </SearchBar>
         </template>
-        <ul v-if="summoner">
+        <ul v-if="summoner && summonerData">
             <li>
                 <div>{{ summoner.name }}</div>
                 <div>{{ summoner.summonerLevel }}</div>
+            </li>
+        </ul>
+        <ul v-if="summonerData">
+            <li v-for="summonerRanks in summonerData" :key="summonerRanks.leagueId">
+                <div>{{ summonerRanks.queueType }}</div>
+                <div>{{ `${summonerRanks.tier} ${summonerRanks.rank}` }}</div>
+                <div>{{ `LP: ${summonerRanks.leaguePoints}` }}</div>
+                <div>{{ `Wins: ${summonerRanks.wins}` }}</div>
+                <div>{{ `Loses: ${summonerRanks.losses}` }}</div>
             </li>
         </ul>
     </div>
@@ -32,6 +41,8 @@ export default {
             error: null,
             id: null,
             summoner: '',
+            summonerData: {},
+            encryptId: '',
             // imageLink: 'http://ddragon.leagueoflegends.com/cdn/img/champion/loading/',
         };
     },
@@ -56,9 +67,28 @@ export default {
             axios
                 .get(`/api/summoner/${summonerName}`)
                 .then(response => {
-                    this.loading = false;
+                    // this.loading = false;
                     this.summoner = response.data;
                     console.log(this.summoner);
+                    this.encryptId = response.data.id;
+                    this.fetchSummonerData(this.encryptId);
+                })
+                .catch(error => {
+                this.loading = false;
+                this.error = error.response.data.message || error.message;
+                console.log(this.error);
+                });
+        },
+        fetchSummonerData(encryptId) {
+            this.error = this.summonerData = null;
+            this.loading = true;
+            console.log(encryptId);
+            axios
+                .get(`/api/summonerData/${encryptId}`)
+                .then(response => {
+                    this.loading = false;
+                    this.summonerData = response.data;
+                    console.log(response.data);
                 })
                 .catch(error => {
                 this.loading = false;

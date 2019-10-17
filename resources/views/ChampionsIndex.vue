@@ -30,7 +30,7 @@
                 <strong>Regular Image:</strong>
                 <div style="width: max-content">
                     <router-link :to="{ name: 'champions.id.index', params: {id: champion.id} }">
-                        <img style="margin: 0" :src="link + champion.image.full" :alt="`image${champion.image.full}`">
+                        <img style="margin: 0" :src="`${link}` + champion.image.full" :alt="`image${champion.image.full}`">
                     </router-link>
                 </div>
                 <div v-for="tag in champion.tags" :key=tag>
@@ -52,13 +52,14 @@ export default {
             champions: null,
             error: null,
             search: '',
-            link: "http://ddragon.leagueoflegends.com/cdn/9.19.1/img/champion/",
-            splashLink: "http://ddragon.leagueoflegends.com/cdn/img/champion/loading/",
+            link: process.env.MIX_CHAMPION_JSON_URL,
+            splashLink: process.env.MIX_CHAMPION_SPLASH_JSON_URL,
             selectedType: 'All',
         };
     },
     created() {
         this.fetchData();
+        console.log(process.env.MIX_CHAMPION_JSON_URL);
     },
     methods: {
         fetchData() {
