@@ -1914,7 +1914,6 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
-//
 
 /* harmony default export */ __webpack_exports__["default"] = ({
   data: function data() {
@@ -1940,7 +1939,7 @@ __webpack_require__.r(__webpack_exports__);
       this.loading = true;
       axios__WEBPACK_IMPORTED_MODULE_0___default.a.get('/api/champions').then(function (response) {
         _this.loading = false;
-        _this.champions = Object.values(response.data.data); // console.log(this.champions);
+        _this.champions = Object.values(response.data.data);
       });
     }
   },
@@ -2717,7 +2716,7 @@ var render = function() {
       1
     ),
     _vm._v(" "),
-    _c("div", { staticClass: "container" }, [_c("router-view")], 1)
+    _c("div", [_c("router-view")], 1)
   ])
 }
 var staticRenderFns = []
@@ -2742,154 +2741,183 @@ var render = function() {
   var _vm = this
   var _h = _vm.$createElement
   var _c = _vm._self._c || _h
-  return _c("div", { staticClass: "champions" }, [
-    _c("div", { staticClass: "search-wrapper" }, [
-      _c("form", { staticClass: "w-full max-w-sm" }, [
-        _c("div", { staticClass: "flex items-center" }, [
-          _c("input", {
+  return _c(
+    "div",
+    { staticClass: "champions", staticStyle: { margin: "0 auto" } },
+    [
+      _c("div", { staticClass: "search-wrapper" }, [
+        _c("form", { staticClass: "w-full max-w-sm" }, [
+          _c("div", { staticClass: "flex items-center" }, [
+            _c("input", {
+              directives: [
+                {
+                  name: "model",
+                  rawName: "v-model",
+                  value: _vm.search,
+                  expression: "search"
+                }
+              ],
+              staticClass:
+                "bg-white focus:outline-none focus:shadow-outline border border-gray-300 rounded-lg py-2 px-4 block w-full appearance-none leading-normal",
+              attrs: { type: "text", placeholder: "Search Champions" },
+              domProps: { value: _vm.search },
+              on: {
+                input: function($event) {
+                  if ($event.target.composing) {
+                    return
+                  }
+                  _vm.search = $event.target.value
+                }
+              }
+            })
+          ])
+        ])
+      ]),
+      _vm._v(" "),
+      _vm.loading
+        ? _c("div", { staticClass: "loading" }, [_vm._v("Loading...")])
+        : _vm._e(),
+      _vm._v(" "),
+      _vm.error
+        ? _c("div", { staticClass: "error" }, [_vm._v(_vm._s(_vm.error))])
+        : _vm._e(),
+      _vm._v(" "),
+      _c("div", { staticClass: "inline-block relative w-64" }, [
+        _c(
+          "select",
+          {
             directives: [
               {
                 name: "model",
                 rawName: "v-model",
-                value: _vm.search,
-                expression: "search"
+                value: _vm.selectedType,
+                expression: "selectedType"
               }
             ],
             staticClass:
-              "bg-white focus:outline-none focus:shadow-outline border border-gray-300 rounded-lg py-2 px-4 block w-full appearance-none leading-normal",
-            attrs: { type: "text", placeholder: "Search Champions" },
-            domProps: { value: _vm.search },
+              "dropdownFilter block appearance-none w-full bg-white border border-gray-400 hover:border-gray-500 px-4 py-2 pr-8 rounded shadow leading-tight focus:outline-none focus:shadow-outline",
             on: {
-              input: function($event) {
-                if ($event.target.composing) {
-                  return
-                }
-                _vm.search = $event.target.value
+              change: function($event) {
+                var $$selectedVal = Array.prototype.filter
+                  .call($event.target.options, function(o) {
+                    return o.selected
+                  })
+                  .map(function(o) {
+                    var val = "_value" in o ? o._value : o.value
+                    return val
+                  })
+                _vm.selectedType = $event.target.multiple
+                  ? $$selectedVal
+                  : $$selectedVal[0]
               }
             }
-          })
-        ])
-      ])
-    ]),
-    _vm._v(" "),
-    _vm.loading
-      ? _c("div", { staticClass: "loading" }, [
-          _vm._v("\n        Loading...\n    ")
-        ])
-      : _vm._e(),
-    _vm._v(" "),
-    _vm.error
-      ? _c("div", { staticClass: "error" }, [
-          _vm._v("\n        " + _vm._s(_vm.error) + "\n    ")
-        ])
-      : _vm._e(),
-    _vm._v(" "),
-    _c("div", { staticClass: "inline-block relative w-64" }, [
-      _c(
-        "select",
-        {
-          directives: [
-            {
-              name: "model",
-              rawName: "v-model",
-              value: _vm.selectedType,
-              expression: "selectedType"
-            }
-          ],
-          staticClass:
-            "dropdownFilter block appearance-none w-full bg-white border border-gray-400 hover:border-gray-500 px-4 py-2 pr-8 rounded shadow leading-tight focus:outline-none focus:shadow-outline",
-          on: {
-            change: function($event) {
-              var $$selectedVal = Array.prototype.filter
-                .call($event.target.options, function(o) {
-                  return o.selected
-                })
-                .map(function(o) {
-                  var val = "_value" in o ? o._value : o.value
-                  return val
-                })
-              _vm.selectedType = $event.target.multiple
-                ? $$selectedVal
-                : $$selectedVal[0]
-            }
-          }
-        },
-        [
-          _c("option", { attrs: { value: "All" } }, [_vm._v(" All")]),
-          _vm._v(" "),
-          _c("option", { attrs: { value: "Tank" } }, [_vm._v(" Tank")]),
-          _vm._v(" "),
-          _c("option", { attrs: { value: "Marksman" } }, [_vm._v(" Marksman")]),
-          _vm._v(" "),
-          _c("option", { attrs: { value: "Mage" } }, [_vm._v(" Mage")]),
-          _vm._v(" "),
-          _c("option", { attrs: { value: "Fighter" } }, [_vm._v(" Fighter")]),
-          _vm._v(" "),
-          _c("option", { attrs: { value: "Assassin" } }, [_vm._v(" Assassin")])
-        ]
-      )
-    ]),
-    _vm._v(" "),
-    _vm.champions
-      ? _c(
-          "ul",
-          _vm._l(_vm.filteredChampions, function(champion) {
-            return _c(
-              "li",
-              { key: champion.key },
-              [
-                _c("strong", [_vm._v("Name:")]),
-                _vm._v(" " + _vm._s(champion.id) + ",\n            "),
-                _c("strong", [_vm._v("Title:")]),
-                _vm._v(" " + _vm._s(champion.title) + ",\n            "),
-                _c("strong", [_vm._v("Regular Image:")]),
-                _vm._v(" "),
-                _c(
-                  "div",
-                  { staticStyle: { width: "max-content" } },
-                  [
-                    _c(
-                      "router-link",
-                      {
-                        attrs: {
-                          to: {
-                            name: "champions.id.index",
-                            params: { id: champion.id }
-                          }
-                        }
-                      },
-                      [
-                        _c("img", {
-                          staticStyle: { margin: "0" },
-                          attrs: {
-                            src: "" + _vm.link + champion.image.full,
-                            alt: "image" + champion.image.full
-                          }
-                        })
-                      ]
-                    )
-                  ],
-                  1
-                ),
-                _vm._v(" "),
-                _vm._l(champion.tags, function(tag) {
-                  return _c("div", { key: tag }, [
-                    _c("strong", [_vm._v(_vm._s(tag))])
-                  ])
-                }),
-                _vm._v(" "),
-                _c("strong", [_vm._v("Base HP:")]),
-                _vm._v(" " + _vm._s(champion.stats.hp) + "\n            "),
-                _c("strong", [_vm._v("Base Movespeed:")]),
-                _vm._v(" " + _vm._s(champion.stats.movespeed) + "\n        ")
-              ],
-              2
-            )
-          }),
-          0
+          },
+          [
+            _c("option", { attrs: { value: "All" } }, [_vm._v(" All")]),
+            _vm._v(" "),
+            _c("option", { attrs: { value: "Tank" } }, [_vm._v(" Tank")]),
+            _vm._v(" "),
+            _c("option", { attrs: { value: "Marksman" } }, [
+              _vm._v(" Marksman")
+            ]),
+            _vm._v(" "),
+            _c("option", { attrs: { value: "Mage" } }, [_vm._v(" Mage")]),
+            _vm._v(" "),
+            _c("option", { attrs: { value: "Fighter" } }, [_vm._v(" Fighter")]),
+            _vm._v(" "),
+            _c("option", { attrs: { value: "Assassin" } }, [
+              _vm._v(" Assassin")
+            ])
+          ]
         )
-      : _vm._e()
-  ])
+      ]),
+      _vm._v(" "),
+      _vm.champions
+        ? _c(
+            "div",
+            {
+              staticStyle: {
+                "text-align": "center",
+                display: "flex",
+                "flex-wrap": "wrap",
+                "justify-content": "center"
+              }
+            },
+            _vm._l(_vm.filteredChampions, function(champion) {
+              return _c(
+                "div",
+                {
+                  key: champion.key,
+                  staticStyle: { width: "25%", "box-sizing": "border-box" }
+                },
+                [
+                  _c(
+                    "div",
+                    {
+                      staticClass:
+                        "gray-400 max-w-sm rounded overflow-hidden shadow-lg",
+                      staticStyle: { width: "90%", margin: "0 auto" }
+                    },
+                    [
+                      _c(
+                        "router-link",
+                        {
+                          attrs: {
+                            to: {
+                              name: "champions.id.index",
+                              params: { id: champion.id }
+                            }
+                          }
+                        },
+                        [
+                          _c("img", {
+                            staticStyle: { margin: "0 auto" },
+                            attrs: {
+                              src: "" + _vm.link + champion.image.full,
+                              alt: "image" + champion.image.full
+                            }
+                          })
+                        ]
+                      ),
+                      _vm._v(" "),
+                      _c("div", { staticClass: "px-6 py-4" }, [
+                        _c("div", { staticClass: "font-bold text-xl mb-2" }, [
+                          _vm._v(_vm._s(champion.id))
+                        ]),
+                        _vm._v(" "),
+                        _c("p", { staticClass: "text-gray-700 text-base" }, [
+                          _vm._v(_vm._s(champion.title))
+                        ])
+                      ]),
+                      _vm._v(" "),
+                      _c(
+                        "div",
+                        { staticClass: "px-6 py-4" },
+                        _vm._l(champion.tags, function(tag) {
+                          return _c("span", { key: tag }, [
+                            _c(
+                              "span",
+                              {
+                                staticClass:
+                                  "inline-block bg-gray-200 rounded-full px-3 py-1 text-sm font-semibold text-gray-700 mr-2"
+                              },
+                              [_c("strong", [_vm._v(_vm._s(tag))])]
+                            )
+                          ])
+                        }),
+                        0
+                      )
+                    ],
+                    1
+                  )
+                ]
+              )
+            }),
+            0
+          )
+        : _vm._e()
+    ]
+  )
 }
 var staticRenderFns = []
 render._withStripped = true

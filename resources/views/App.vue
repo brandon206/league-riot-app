@@ -9,7 +9,7 @@
           <!-- <router-link :to="{ name: 'champions.id.index', params: {id: 'Aatrox'} }">Champion</router-link> -->
       </p>
 
-      <div class="container">
+      <div>
           <!--this is where our router will render the given component that matches the route-->
           <router-view></router-view>
       </div>
