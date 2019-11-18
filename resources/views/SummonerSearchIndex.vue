@@ -16,19 +16,22 @@
         <ul v-if="summonerData">
             <li v-for="summonerRanks in summonerData" :key="summonerRanks.leagueId">
                 <div>{{ summonerRanks.queueType }}</div>
-                <div>{{ `${summonerRanks.tier} ${summonerRanks.rank}` }}</div>
+                <div>
+                    <img :src="getTierImgUrl(summonerRanks.tier)" :alt="`${summonerRanks.tier}`">
+                    {{ `${summonerRanks.tier} ${summonerRanks.rank}` }}
+                </div>
                 <div>{{ `LP: ${summonerRanks.leaguePoints}` }}</div>
                 <div>{{ `Wins: ${summonerRanks.wins}` }}</div>
                 <div>{{ `Loses: ${summonerRanks.losses}` }}</div>
             </li>
         </ul>
     </div>
-    
 </template>
 
 <script>
 import axios from 'axios';
 import SearchBar from './SearchBar';
+
 
 export default {
     components: {
@@ -53,9 +56,12 @@ export default {
     computed: {
         getImageLink: function(link) {
             return link;
-        }
+        },
     },
     methods: {
+        getTierImgUrl(tier) {
+            return require(`../../resources/images/${tier}.png`);
+        },
         handleSearchClick: function(summonerName) {
             console.log('this be the summoner\'s name: ', summonerName);
             this.fetchSummoner(summonerName);

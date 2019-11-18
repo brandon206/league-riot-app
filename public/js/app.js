@@ -2118,6 +2118,8 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
+//
 
 
 /* harmony default export */ __webpack_exports__["default"] = ({
@@ -2146,6 +2148,9 @@ __webpack_require__.r(__webpack_exports__);
     }
   },
   methods: {
+    getTierImgUrl: function getTierImgUrl(tier) {
+      return __webpack_require__("./resources/images sync recursive ^\\.\\/.*\\.png$")("./".concat(tier, ".png"));
+    },
     handleSearchClick: function handleSearchClick(summonerName) {
       console.log('this be the summoner\'s name: ', summonerName);
       this.fetchSummoner(summonerName);
@@ -3142,7 +3147,17 @@ var render = function() {
                 _c("div", [_vm._v(_vm._s(summonerRanks.queueType))]),
                 _vm._v(" "),
                 _c("div", [
-                  _vm._v(_vm._s(summonerRanks.tier + " " + summonerRanks.rank))
+                  _c("img", {
+                    attrs: {
+                      src: _vm.getTierImgUrl(summonerRanks.tier),
+                      alt: "" + summonerRanks.tier
+                    }
+                  }),
+                  _vm._v(
+                    "\n                " +
+                      _vm._s(summonerRanks.tier + " " + summonerRanks.rank) +
+                      "\n            "
+                  )
                 ]),
                 _vm._v(" "),
                 _c("div", [
@@ -18163,6 +18178,134 @@ try {
 
 module.exports = g;
 
+
+/***/ }),
+
+/***/ "./resources/images sync recursive ^\\.\\/.*\\.png$":
+/*!*********************************************!*\
+  !*** ./resources/images sync ^\.\/.*\.png$ ***!
+  \*********************************************/
+/*! no static exports found */
+/***/ (function(module, exports, __webpack_require__) {
+
+var map = {
+	"./BRONZE.png": "./resources/images/BRONZE.png",
+	"./DIAMOND.png": "./resources/images/DIAMOND.png",
+	"./GOLD.png": "./resources/images/GOLD.png",
+	"./GRANDMASTER.png": "./resources/images/GRANDMASTER.png",
+	"./IRON.png": "./resources/images/IRON.png",
+	"./MASTER.png": "./resources/images/MASTER.png",
+	"./PLATINUM.png": "./resources/images/PLATINUM.png",
+	"./SILVER.png": "./resources/images/SILVER.png"
+};
+
+
+function webpackContext(req) {
+	var id = webpackContextResolve(req);
+	return __webpack_require__(id);
+}
+function webpackContextResolve(req) {
+	if(!__webpack_require__.o(map, req)) {
+		var e = new Error("Cannot find module '" + req + "'");
+		e.code = 'MODULE_NOT_FOUND';
+		throw e;
+	}
+	return map[req];
+}
+webpackContext.keys = function webpackContextKeys() {
+	return Object.keys(map);
+};
+webpackContext.resolve = webpackContextResolve;
+module.exports = webpackContext;
+webpackContext.id = "./resources/images sync recursive ^\\.\\/.*\\.png$";
+
+/***/ }),
+
+/***/ "./resources/images/BRONZE.png":
+/*!*************************************!*\
+  !*** ./resources/images/BRONZE.png ***!
+  \*************************************/
+/*! no static exports found */
+/***/ (function(module, exports) {
+
+module.exports = "/images/BRONZE.png?39964f7f7440521c5d53a63cbeed96ff";
+
+/***/ }),
+
+/***/ "./resources/images/DIAMOND.png":
+/*!**************************************!*\
+  !*** ./resources/images/DIAMOND.png ***!
+  \**************************************/
+/*! no static exports found */
+/***/ (function(module, exports) {
+
+module.exports = "/images/DIAMOND.png?c901832766fb4f856d1f9603208c6761";
+
+/***/ }),
+
+/***/ "./resources/images/GOLD.png":
+/*!***********************************!*\
+  !*** ./resources/images/GOLD.png ***!
+  \***********************************/
+/*! no static exports found */
+/***/ (function(module, exports) {
+
+module.exports = "/images/GOLD.png?19be519b965d28bf5af7cbb6b7f2471a";
+
+/***/ }),
+
+/***/ "./resources/images/GRANDMASTER.png":
+/*!******************************************!*\
+  !*** ./resources/images/GRANDMASTER.png ***!
+  \******************************************/
+/*! no static exports found */
+/***/ (function(module, exports) {
+
+module.exports = "/images/GRANDMASTER.png?d0d4b62f7415cf0ca06d60ce1ae36744";
+
+/***/ }),
+
+/***/ "./resources/images/IRON.png":
+/*!***********************************!*\
+  !*** ./resources/images/IRON.png ***!
+  \***********************************/
+/*! no static exports found */
+/***/ (function(module, exports) {
+
+module.exports = "/images/IRON.png?1a6b4669f3cb62c2edf32971da0b146e";
+
+/***/ }),
+
+/***/ "./resources/images/MASTER.png":
+/*!*************************************!*\
+  !*** ./resources/images/MASTER.png ***!
+  \*************************************/
+/*! no static exports found */
+/***/ (function(module, exports) {
+
+module.exports = "/images/MASTER.png?4156f1c160999db19a69d5bb0e2aaca7";
+
+/***/ }),
+
+/***/ "./resources/images/PLATINUM.png":
+/*!***************************************!*\
+  !*** ./resources/images/PLATINUM.png ***!
+  \***************************************/
+/*! no static exports found */
+/***/ (function(module, exports) {
+
+module.exports = "/images/PLATINUM.png?86ac5170561afe99a457dccd664eaf72";
+
+/***/ }),
+
+/***/ "./resources/images/SILVER.png":
+/*!*************************************!*\
+  !*** ./resources/images/SILVER.png ***!
+  \*************************************/
+/*! no static exports found */
+/***/ (function(module, exports) {
+
+module.exports = "/images/SILVER.png?3a4aa1a5e576ae0ffb79db1f7505ba37";
 
 /***/ }),
 
