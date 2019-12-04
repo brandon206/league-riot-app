@@ -2120,6 +2120,10 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
+//
+//
+//
 
 
 /* harmony default export */ __webpack_exports__["default"] = ({
@@ -2139,7 +2143,7 @@ __webpack_require__.r(__webpack_exports__);
     };
   },
   created: function created() {
-    console.log(this.$route.params.id);
+    // console.log(this.$route.params.id);
     this.id = this.$route.params.id;
   },
   computed: {
@@ -2152,7 +2156,7 @@ __webpack_require__.r(__webpack_exports__);
       return __webpack_require__("./resources/images sync recursive ^\\.\\/.*\\.png$")("./".concat(tier, ".png"));
     },
     handleSearchClick: function handleSearchClick(summonerName) {
-      console.log('this be the summoner\'s name: ', summonerName);
+      // console.log('this be the summoner\'s name: ', summonerName);
       this.fetchSummoner(summonerName);
     },
     fetchSummoner: function fetchSummoner(summonerName) {
@@ -2163,31 +2167,28 @@ __webpack_require__.r(__webpack_exports__);
       console.log(summonerName);
       axios__WEBPACK_IMPORTED_MODULE_0___default.a.get("/api/summoner/".concat(summonerName)).then(function (response) {
         // this.loading = false;
-        _this.summoner = response.data;
-        console.log(_this.summoner);
+        _this.summoner = response.data; // console.log(this.summoner);
+
         _this.encryptId = response.data.id;
 
         _this.fetchSummonerData(_this.encryptId);
       })["catch"](function (error) {
         _this.loading = false;
-        _this.error = error.response.data.message || error.message;
-        console.log(_this.error);
+        _this.error = error.response.data.message || error.message; // console.log(this.error);
       });
     },
     fetchSummonerData: function fetchSummonerData(encryptId) {
       var _this2 = this;
 
       this.error = this.summonerData = null;
-      this.loading = true;
-      console.log(encryptId);
+      this.loading = true; // console.log(encryptId);
+
       axios__WEBPACK_IMPORTED_MODULE_0___default.a.get("/api/summonerData/".concat(encryptId)).then(function (response) {
         _this2.loading = false;
-        _this2.summonerData = response.data;
-        console.log(response.data);
+        _this2.summonerData = response.data; // console.log(response.data);
       })["catch"](function (error) {
         _this2.loading = false;
-        _this2.error = error.response.data.message || error.message;
-        console.log(_this2.error);
+        _this2.error = error.response.data.message || error.message; // console.log(this.error);
       });
     }
   }
@@ -3129,45 +3130,107 @@ var render = function() {
         })
       ],
       _vm._v(" "),
-      _vm.summoner && _vm.summonerData
-        ? _c("ul", [
-            _c("li", [
-              _c("div", [_vm._v(_vm._s(_vm.summoner.name))]),
-              _vm._v(" "),
-              _c("div", [_vm._v(_vm._s(_vm.summoner.summonerLevel))])
-            ])
-          ])
-        : _vm._e(),
-      _vm._v(" "),
       _vm.summonerData
         ? _c(
-            "ul",
+            "div",
+            {
+              staticClass:
+                "container mx-auto max-w-sm rounded overflow-hidden shadow-lg"
+            },
             _vm._l(_vm.summonerData, function(summonerRanks) {
-              return _c("li", { key: summonerRanks.leagueId }, [
-                _c("div", [_vm._v(_vm._s(summonerRanks.queueType))]),
-                _vm._v(" "),
-                _c("div", [
+              return _c(
+                "div",
+                { key: summonerRanks.leagueId, staticClass: "px-6 py-4" },
+                [
                   _c("img", {
+                    staticClass: "mx-auto w-32",
                     attrs: {
                       src: _vm.getTierImgUrl(summonerRanks.tier),
                       alt: "" + summonerRanks.tier
                     }
                   }),
-                  _vm._v(
-                    "\n                " +
-                      _vm._s(summonerRanks.tier + " " + summonerRanks.rank) +
-                      "\n            "
-                  )
-                ]),
-                _vm._v(" "),
-                _c("div", [
-                  _vm._v(_vm._s("LP: " + summonerRanks.leaguePoints))
-                ]),
-                _vm._v(" "),
-                _c("div", [_vm._v(_vm._s("Wins: " + summonerRanks.wins))]),
-                _vm._v(" "),
-                _c("div", [_vm._v(_vm._s("Loses: " + summonerRanks.losses))])
-              ])
+                  _vm._v(" "),
+                  _c("div", [
+                    _c("div", { staticClass: "font-bold text-xl mb-2" }, [
+                      _vm._v(_vm._s(_vm.summoner.name))
+                    ]),
+                    _vm._v(" "),
+                    _c("div", { staticClass: "text-gray-700 text-base" }, [
+                      _vm._v("Level: " + _vm._s(_vm.summoner.summonerLevel))
+                    ]),
+                    _vm._v(" "),
+                    _c("div", { staticClass: "text-gray-700 text-base" }, [
+                      _vm._v(
+                        _vm._s(summonerRanks.tier + " " + summonerRanks.rank)
+                      )
+                    ]),
+                    _vm._v(" "),
+                    _c("div", { staticClass: "text-gray-700 text-base" }, [
+                      _vm._v(_vm._s(summonerRanks.queueType))
+                    ])
+                  ]),
+                  _vm._v(" "),
+                  _c("div", [
+                    _c(
+                      "span",
+                      {
+                        staticClass:
+                          "inline-block bg-gray-200 rounded-full px-3 py-1 text-sm font-semibold text-gray-700 mr-2"
+                      },
+                      [_vm._v(_vm._s("LP: " + summonerRanks.leaguePoints))]
+                    ),
+                    _vm._v(" "),
+                    _c(
+                      "span",
+                      {
+                        staticClass:
+                          "inline-block bg-gray-200 rounded-full px-3 py-1 text-sm font-semibold text-gray-700 mr-2"
+                      },
+                      [_vm._v(_vm._s("Wins: " + summonerRanks.wins))]
+                    ),
+                    _vm._v(" "),
+                    _c(
+                      "span",
+                      {
+                        staticClass:
+                          "inline-block bg-gray-200 rounded-full px-3 py-1 text-sm font-semibold text-gray-700 mr-2"
+                      },
+                      [_vm._v(_vm._s("Loses: " + summonerRanks.losses))]
+                    )
+                  ]),
+                  _vm._v(" "),
+                  _c("div", [
+                    _c(
+                      "div",
+                      {
+                        staticClass:
+                          "bg-gray-300 hover:bg-gray-400 text-gray-800 font-bold py-2 px-4 rounded inline-flex items-center"
+                      },
+                      [
+                        _c(
+                          "svg",
+                          {
+                            staticClass: "fill-current w-4 h-4 mr-2",
+                            attrs: {
+                              xmlns: "http://www.w3.org/2000/svg",
+                              viewBox: "0 0 20 20"
+                            }
+                          },
+                          [
+                            _c("path", {
+                              attrs: {
+                                d: "M13 8V2H7v6H2l8 8 8-8h-5zM0 18h20v2H0v-2z"
+                              }
+                            })
+                          ]
+                        ),
+                        _vm._v(" "),
+                        _c("span", [_vm._v("Match History")])
+                      ]
+                    )
+                  ])
+                ]
+              )
             }),
             0
           )
