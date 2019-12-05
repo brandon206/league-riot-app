@@ -1972,6 +1972,32 @@ __webpack_require__.r(__webpack_exports__);
 
 /***/ }),
 
+/***/ "./node_modules/babel-loader/lib/index.js?!./node_modules/vue-loader/lib/index.js?!./resources/views/MatchHistory.vue?vue&type=script&lang=js&":
+/*!***************************************************************************************************************************************************************!*\
+  !*** ./node_modules/babel-loader/lib??ref--4-0!./node_modules/vue-loader/lib??vue-loader-options!./resources/views/MatchHistory.vue?vue&type=script&lang=js& ***!
+  \***************************************************************************************************************************************************************/
+/*! exports provided: default */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+/* harmony default export */ __webpack_exports__["default"] = ({
+  props: ['matches']
+});
+
+/***/ }),
+
 /***/ "./node_modules/babel-loader/lib/index.js?!./node_modules/vue-loader/lib/index.js?!./resources/views/SearchBar.vue?vue&type=script&lang=js&":
 /*!************************************************************************************************************************************************************!*\
   !*** ./node_modules/babel-loader/lib??ref--4-0!./node_modules/vue-loader/lib??vue-loader-options!./resources/views/SearchBar.vue?vue&type=script&lang=js& ***!
@@ -2090,6 +2116,7 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var axios__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! axios */ "./node_modules/axios/index.js");
 /* harmony import */ var axios__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(axios__WEBPACK_IMPORTED_MODULE_0__);
 /* harmony import */ var _SearchBar__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./SearchBar */ "./resources/views/SearchBar.vue");
+/* harmony import */ var _MatchHistory__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./MatchHistory */ "./resources/views/MatchHistory.vue");
 //
 //
 //
@@ -2118,11 +2145,27 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+
 
 
 /* harmony default export */ __webpack_exports__["default"] = ({
   components: {
-    'SearchBar': _SearchBar__WEBPACK_IMPORTED_MODULE_1__["default"]
+    'SearchBar': _SearchBar__WEBPACK_IMPORTED_MODULE_1__["default"],
+    'MatchHistory': _MatchHistory__WEBPACK_IMPORTED_MODULE_2__["default"]
   },
   data: function data() {
     return {
@@ -2130,14 +2173,16 @@ __webpack_require__.r(__webpack_exports__);
       champion: null,
       error: null,
       id: null,
+      accountId: null,
       summoner: '',
       summonerData: {},
-      encryptId: '' // imageLink: 'http://ddragon.leagueoflegends.com/cdn/img/champion/loading/',
+      encryptId: '',
+      matches: [] // imageLink: 'http://ddragon.leagueoflegends.com/cdn/img/champion/loading/',
 
     };
   },
   created: function created() {
-    console.log(this.$route.params.id);
+    // console.log(this.$route.params.id);
     this.id = this.$route.params.id;
   },
   computed: {
@@ -2146,9 +2191,15 @@ __webpack_require__.r(__webpack_exports__);
     }
   },
   methods: {
+    getTierImgUrl: function getTierImgUrl(tier) {
+      return __webpack_require__("./resources/images sync recursive ^\\.\\/.*\\.png$")("./".concat(tier, ".png"));
+    },
     handleSearchClick: function handleSearchClick(summonerName) {
-      console.log('this be the summoner\'s name: ', summonerName);
+      // console.log('this be the summoner\'s name: ', summonerName);
       this.fetchSummoner(summonerName);
+    },
+    handleMatchHistoryClick: function handleMatchHistoryClick() {
+      this.fetchSummonerMatchHistory();
     },
     fetchSummoner: function fetchSummoner(summonerName) {
       var _this = this;
@@ -2161,28 +2212,41 @@ __webpack_require__.r(__webpack_exports__);
         _this.summoner = response.data;
         console.log(_this.summoner);
         _this.encryptId = response.data.id;
+        _this.accountId = response.data.accountId;
 
         _this.fetchSummonerData(_this.encryptId);
       })["catch"](function (error) {
         _this.loading = false;
-        _this.error = error.response.data.message || error.message;
-        console.log(_this.error);
+        _this.error = error.response.data.message || error.message; // console.log(this.error);
       });
     },
     fetchSummonerData: function fetchSummonerData(encryptId) {
       var _this2 = this;
 
       this.error = this.summonerData = null;
-      this.loading = true;
-      console.log(encryptId);
+      this.loading = true; // console.log(encryptId);
+
       axios__WEBPACK_IMPORTED_MODULE_0___default.a.get("/api/summonerData/".concat(encryptId)).then(function (response) {
         _this2.loading = false;
-        _this2.summonerData = response.data;
-        console.log(response.data);
+        _this2.summonerData = response.data; // console.log(response.data);
       })["catch"](function (error) {
         _this2.loading = false;
-        _this2.error = error.response.data.message || error.message;
-        console.log(_this2.error);
+        _this2.error = error.response.data.message || error.message; // console.log(this.error);
+      });
+    },
+    fetchSummonerMatchHistory: function fetchSummonerMatchHistory() {
+      var _this3 = this;
+
+      this.error = this.matches = null;
+      this.loading = true;
+      axios__WEBPACK_IMPORTED_MODULE_0___default.a.get("/api/summonerMatchHistory/".concat(this.accountId)).then(function (response) {
+        _this3.loading = false;
+        _this3.matches = response.data.matches;
+        console.log('im getting a response: ', _this3.matches);
+      })["catch"](function (error) {
+        _this3.loading = false;
+        _this3.error = error.response.data.message || error.message;
+        console.log(_this3.error);
       });
     }
   }
@@ -2950,6 +3014,44 @@ render._withStripped = true
 
 /***/ }),
 
+/***/ "./node_modules/vue-loader/lib/loaders/templateLoader.js?!./node_modules/vue-loader/lib/index.js?!./resources/views/MatchHistory.vue?vue&type=template&id=70ee72e8&":
+/*!*******************************************************************************************************************************************************************************************************!*\
+  !*** ./node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!./node_modules/vue-loader/lib??vue-loader-options!./resources/views/MatchHistory.vue?vue&type=template&id=70ee72e8& ***!
+  \*******************************************************************************************************************************************************************************************************/
+/*! exports provided: render, staticRenderFns */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "render", function() { return render; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "staticRenderFns", function() { return staticRenderFns; });
+var render = function() {
+  var _vm = this
+  var _h = _vm.$createElement
+  var _c = _vm._self._c || _h
+  return _c(
+    "div",
+    _vm._l(_vm.matches, function(matchData) {
+      return _c("div", { key: matchData.gameId, staticClass: "px-6 py-4" }, [
+        _c("p", [_vm._v(_vm._s(matchData.platformId))]),
+        _vm._v(" "),
+        _c("p", [_vm._v(_vm._s(matchData.champion))]),
+        _vm._v(" "),
+        _c("p", [_vm._v(_vm._s(matchData.role))]),
+        _vm._v(" "),
+        _c("p", [_vm._v(_vm._s(matchData.lane))])
+      ])
+    }),
+    0
+  )
+}
+var staticRenderFns = []
+render._withStripped = true
+
+
+
+/***/ }),
+
 /***/ "./node_modules/vue-loader/lib/loaders/templateLoader.js?!./node_modules/vue-loader/lib/index.js?!./resources/views/SearchBar.vue?vue&type=template&id=8cbd857c&":
 /*!****************************************************************************************************************************************************************************************************!*\
   !*** ./node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!./node_modules/vue-loader/lib??vue-loader-options!./resources/views/SearchBar.vue?vue&type=template&id=8cbd857c& ***!
@@ -3124,38 +3226,100 @@ var render = function() {
         })
       ],
       _vm._v(" "),
-      _vm.summoner && _vm.summonerData
-        ? _c("ul", [
-            _c("li", [
-              _c("div", [_vm._v(_vm._s(_vm.summoner.name))]),
-              _vm._v(" "),
-              _c("div", [_vm._v(_vm._s(_vm.summoner.summonerLevel))])
-            ])
-          ])
-        : _vm._e(),
-      _vm._v(" "),
       _vm.summonerData
         ? _c(
-            "ul",
+            "div",
+            {
+              staticClass:
+                "container mx-auto max-w-sm rounded overflow-hidden shadow-lg"
+            },
             _vm._l(_vm.summonerData, function(summonerRanks) {
-              return _c("li", { key: summonerRanks.leagueId }, [
-                _c("div", [_vm._v(_vm._s(summonerRanks.queueType))]),
-                _vm._v(" "),
-                _c("div", [
-                  _vm._v(_vm._s(summonerRanks.tier + " " + summonerRanks.rank))
-                ]),
-                _vm._v(" "),
-                _c("div", [
-                  _vm._v(_vm._s("LP: " + summonerRanks.leaguePoints))
-                ]),
-                _vm._v(" "),
-                _c("div", [_vm._v(_vm._s("Wins: " + summonerRanks.wins))]),
-                _vm._v(" "),
-                _c("div", [_vm._v(_vm._s("Loses: " + summonerRanks.losses))])
-              ])
+              return _c(
+                "div",
+                { key: summonerRanks.leagueId, staticClass: "px-6 py-4" },
+                [
+                  _c("img", {
+                    staticClass: "mx-auto w-32",
+                    attrs: {
+                      src: _vm.getTierImgUrl(summonerRanks.tier),
+                      alt: "" + summonerRanks.tier
+                    }
+                  }),
+                  _vm._v(" "),
+                  _c("div", [
+                    _c("div", { staticClass: "font-bold text-xl mb-2" }, [
+                      _vm._v(_vm._s(_vm.summoner.name))
+                    ]),
+                    _vm._v(" "),
+                    _c("div", { staticClass: "text-gray-700 text-base" }, [
+                      _vm._v("Level: " + _vm._s(_vm.summoner.summonerLevel))
+                    ]),
+                    _vm._v(" "),
+                    _c("div", { staticClass: "text-gray-700 text-base" }, [
+                      _vm._v(
+                        _vm._s(summonerRanks.tier + " " + summonerRanks.rank)
+                      )
+                    ]),
+                    _vm._v(" "),
+                    _c("div", { staticClass: "text-gray-700 text-base" }, [
+                      _vm._v(_vm._s(summonerRanks.queueType))
+                    ])
+                  ]),
+                  _vm._v(" "),
+                  _c("div", [
+                    _c(
+                      "span",
+                      {
+                        staticClass:
+                          "inline-block bg-gray-200 rounded-full px-3 py-1 text-sm font-semibold text-gray-700 mr-2"
+                      },
+                      [_vm._v(_vm._s("LP: " + summonerRanks.leaguePoints))]
+                    ),
+                    _vm._v(" "),
+                    _c(
+                      "span",
+                      {
+                        staticClass:
+                          "inline-block bg-gray-200 rounded-full px-3 py-1 text-sm font-semibold text-gray-700 mr-2"
+                      },
+                      [_vm._v(_vm._s("Wins: " + summonerRanks.wins))]
+                    ),
+                    _vm._v(" "),
+                    _c(
+                      "span",
+                      {
+                        staticClass:
+                          "inline-block bg-gray-200 rounded-full px-3 py-1 text-sm font-semibold text-gray-700 mr-2"
+                      },
+                      [_vm._v(_vm._s("Loses: " + summonerRanks.losses))]
+                    )
+                  ]),
+                  _vm._v(" "),
+                  _c("div", [
+                    _c(
+                      "button",
+                      {
+                        staticClass:
+                          "bg-blue-800 hover:bg-blue-900 text-white font-bold py-2 px-4 border-b-4 border-blue-900 hover:border-blue-900 rounded",
+                        attrs: { type: "button" },
+                        on: { click: _vm.handleMatchHistoryClick }
+                      },
+                      [
+                        _vm._v(
+                          "\n                    Match History\n                "
+                        )
+                      ]
+                    )
+                  ])
+                ]
+              )
             }),
             0
           )
+        : _vm._e(),
+      _vm._v(" "),
+      _vm.matches
+        ? _c("MatchHistory", { attrs: { matches: _vm.matches } })
         : _vm._e()
     ],
     2
@@ -18166,6 +18330,134 @@ module.exports = g;
 
 /***/ }),
 
+/***/ "./resources/images sync recursive ^\\.\\/.*\\.png$":
+/*!*********************************************!*\
+  !*** ./resources/images sync ^\.\/.*\.png$ ***!
+  \*********************************************/
+/*! no static exports found */
+/***/ (function(module, exports, __webpack_require__) {
+
+var map = {
+	"./BRONZE.png": "./resources/images/BRONZE.png",
+	"./DIAMOND.png": "./resources/images/DIAMOND.png",
+	"./GOLD.png": "./resources/images/GOLD.png",
+	"./GRANDMASTER.png": "./resources/images/GRANDMASTER.png",
+	"./IRON.png": "./resources/images/IRON.png",
+	"./MASTER.png": "./resources/images/MASTER.png",
+	"./PLATINUM.png": "./resources/images/PLATINUM.png",
+	"./SILVER.png": "./resources/images/SILVER.png"
+};
+
+
+function webpackContext(req) {
+	var id = webpackContextResolve(req);
+	return __webpack_require__(id);
+}
+function webpackContextResolve(req) {
+	if(!__webpack_require__.o(map, req)) {
+		var e = new Error("Cannot find module '" + req + "'");
+		e.code = 'MODULE_NOT_FOUND';
+		throw e;
+	}
+	return map[req];
+}
+webpackContext.keys = function webpackContextKeys() {
+	return Object.keys(map);
+};
+webpackContext.resolve = webpackContextResolve;
+module.exports = webpackContext;
+webpackContext.id = "./resources/images sync recursive ^\\.\\/.*\\.png$";
+
+/***/ }),
+
+/***/ "./resources/images/BRONZE.png":
+/*!*************************************!*\
+  !*** ./resources/images/BRONZE.png ***!
+  \*************************************/
+/*! no static exports found */
+/***/ (function(module, exports) {
+
+module.exports = "/images/BRONZE.png?39964f7f7440521c5d53a63cbeed96ff";
+
+/***/ }),
+
+/***/ "./resources/images/DIAMOND.png":
+/*!**************************************!*\
+  !*** ./resources/images/DIAMOND.png ***!
+  \**************************************/
+/*! no static exports found */
+/***/ (function(module, exports) {
+
+module.exports = "/images/DIAMOND.png?c901832766fb4f856d1f9603208c6761";
+
+/***/ }),
+
+/***/ "./resources/images/GOLD.png":
+/*!***********************************!*\
+  !*** ./resources/images/GOLD.png ***!
+  \***********************************/
+/*! no static exports found */
+/***/ (function(module, exports) {
+
+module.exports = "/images/GOLD.png?19be519b965d28bf5af7cbb6b7f2471a";
+
+/***/ }),
+
+/***/ "./resources/images/GRANDMASTER.png":
+/*!******************************************!*\
+  !*** ./resources/images/GRANDMASTER.png ***!
+  \******************************************/
+/*! no static exports found */
+/***/ (function(module, exports) {
+
+module.exports = "/images/GRANDMASTER.png?d0d4b62f7415cf0ca06d60ce1ae36744";
+
+/***/ }),
+
+/***/ "./resources/images/IRON.png":
+/*!***********************************!*\
+  !*** ./resources/images/IRON.png ***!
+  \***********************************/
+/*! no static exports found */
+/***/ (function(module, exports) {
+
+module.exports = "/images/IRON.png?1a6b4669f3cb62c2edf32971da0b146e";
+
+/***/ }),
+
+/***/ "./resources/images/MASTER.png":
+/*!*************************************!*\
+  !*** ./resources/images/MASTER.png ***!
+  \*************************************/
+/*! no static exports found */
+/***/ (function(module, exports) {
+
+module.exports = "/images/MASTER.png?4156f1c160999db19a69d5bb0e2aaca7";
+
+/***/ }),
+
+/***/ "./resources/images/PLATINUM.png":
+/*!***************************************!*\
+  !*** ./resources/images/PLATINUM.png ***!
+  \***************************************/
+/*! no static exports found */
+/***/ (function(module, exports) {
+
+module.exports = "/images/PLATINUM.png?86ac5170561afe99a457dccd664eaf72";
+
+/***/ }),
+
+/***/ "./resources/images/SILVER.png":
+/*!*************************************!*\
+  !*** ./resources/images/SILVER.png ***!
+  \*************************************/
+/*! no static exports found */
+/***/ (function(module, exports) {
+
+module.exports = "/images/SILVER.png?3a4aa1a5e576ae0ffb79db1f7505ba37";
+
+/***/ }),
+
 /***/ "./resources/js/app.js":
 /*!*****************************!*\
   !*** ./resources/js/app.js ***!
@@ -18418,6 +18710,75 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "render", function() { return _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_Home_vue_vue_type_template_id_765745b8___WEBPACK_IMPORTED_MODULE_0__["render"]; });
 
 /* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "staticRenderFns", function() { return _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_Home_vue_vue_type_template_id_765745b8___WEBPACK_IMPORTED_MODULE_0__["staticRenderFns"]; });
+
+
+
+/***/ }),
+
+/***/ "./resources/views/MatchHistory.vue":
+/*!******************************************!*\
+  !*** ./resources/views/MatchHistory.vue ***!
+  \******************************************/
+/*! exports provided: default */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony import */ var _MatchHistory_vue_vue_type_template_id_70ee72e8___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./MatchHistory.vue?vue&type=template&id=70ee72e8& */ "./resources/views/MatchHistory.vue?vue&type=template&id=70ee72e8&");
+/* harmony import */ var _MatchHistory_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./MatchHistory.vue?vue&type=script&lang=js& */ "./resources/views/MatchHistory.vue?vue&type=script&lang=js&");
+/* empty/unused harmony star reexport *//* harmony import */ var _node_modules_vue_loader_lib_runtime_componentNormalizer_js__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ../../node_modules/vue-loader/lib/runtime/componentNormalizer.js */ "./node_modules/vue-loader/lib/runtime/componentNormalizer.js");
+
+
+
+
+
+/* normalize component */
+
+var component = Object(_node_modules_vue_loader_lib_runtime_componentNormalizer_js__WEBPACK_IMPORTED_MODULE_2__["default"])(
+  _MatchHistory_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_1__["default"],
+  _MatchHistory_vue_vue_type_template_id_70ee72e8___WEBPACK_IMPORTED_MODULE_0__["render"],
+  _MatchHistory_vue_vue_type_template_id_70ee72e8___WEBPACK_IMPORTED_MODULE_0__["staticRenderFns"],
+  false,
+  null,
+  null,
+  null
+  
+)
+
+/* hot reload */
+if (false) { var api; }
+component.options.__file = "resources/views/MatchHistory.vue"
+/* harmony default export */ __webpack_exports__["default"] = (component.exports);
+
+/***/ }),
+
+/***/ "./resources/views/MatchHistory.vue?vue&type=script&lang=js&":
+/*!*******************************************************************!*\
+  !*** ./resources/views/MatchHistory.vue?vue&type=script&lang=js& ***!
+  \*******************************************************************/
+/*! exports provided: default */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony import */ var _node_modules_babel_loader_lib_index_js_ref_4_0_node_modules_vue_loader_lib_index_js_vue_loader_options_MatchHistory_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! -!../../node_modules/babel-loader/lib??ref--4-0!../../node_modules/vue-loader/lib??vue-loader-options!./MatchHistory.vue?vue&type=script&lang=js& */ "./node_modules/babel-loader/lib/index.js?!./node_modules/vue-loader/lib/index.js?!./resources/views/MatchHistory.vue?vue&type=script&lang=js&");
+/* empty/unused harmony star reexport */ /* harmony default export */ __webpack_exports__["default"] = (_node_modules_babel_loader_lib_index_js_ref_4_0_node_modules_vue_loader_lib_index_js_vue_loader_options_MatchHistory_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_0__["default"]); 
+
+/***/ }),
+
+/***/ "./resources/views/MatchHistory.vue?vue&type=template&id=70ee72e8&":
+/*!*************************************************************************!*\
+  !*** ./resources/views/MatchHistory.vue?vue&type=template&id=70ee72e8& ***!
+  \*************************************************************************/
+/*! exports provided: render, staticRenderFns */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony import */ var _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_MatchHistory_vue_vue_type_template_id_70ee72e8___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! -!../../node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!../../node_modules/vue-loader/lib??vue-loader-options!./MatchHistory.vue?vue&type=template&id=70ee72e8& */ "./node_modules/vue-loader/lib/loaders/templateLoader.js?!./node_modules/vue-loader/lib/index.js?!./resources/views/MatchHistory.vue?vue&type=template&id=70ee72e8&");
+/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "render", function() { return _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_MatchHistory_vue_vue_type_template_id_70ee72e8___WEBPACK_IMPORTED_MODULE_0__["render"]; });
+
+/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "staticRenderFns", function() { return _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_MatchHistory_vue_vue_type_template_id_70ee72e8___WEBPACK_IMPORTED_MODULE_0__["staticRenderFns"]; });
 
 
 
