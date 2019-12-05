@@ -22,24 +22,33 @@
                     <span class="inline-block bg-gray-200 rounded-full px-3 py-1 text-sm font-semibold text-gray-700 mr-2">{{ `Loses: ${summonerRanks.losses}` }}</span>
                 </div>
                 <div>
-                    <div class="bg-gray-300 hover:bg-gray-400 text-gray-800 font-bold py-2 px-4 rounded inline-flex items-center">
+                    <!-- <div >
                         <svg class="fill-current w-4 h-4 mr-2" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20"><path d="M13 8V2H7v6H2l8 8 8-8h-5zM0 18h20v2H0v-2z"/></svg>
                         <span>Match History</span>
-                    </div>
+                    </div> -->
+                    <button type="button" v-on:click="handleMatchHistoryClick" class="bg-blue-800 hover:bg-blue-900 text-white font-bold py-2 px-4 border-b-4 border-blue-900 hover:border-blue-900 rounded">
+                        Match History
+                    </button>
                 </div>
             </div>
         </div>
+        <MatchHistory
+            v-if="matches"
+            :matches="matches"
+        >
+        </MatchHistory>
     </div>
 </template>
 
 <script>
 import axios from 'axios';
 import SearchBar from './SearchBar';
-
+import MatchHistory from './MatchHistory';
 
 export default {
     components: {
-        'SearchBar': SearchBar
+        'SearchBar': SearchBar,
+        'MatchHistory': MatchHistory,
     },
     data() {
         return {
@@ -47,9 +56,11 @@ export default {
             champion: null,
             error: null,
             id: null,
+            accountId: null,
             summoner: '',
             summonerData: {},
             encryptId: '',
+            matches: [],
             // imageLink: 'http://ddragon.leagueoflegends.com/cdn/img/champion/loading/',
         };
     },
@@ -70,6 +81,9 @@ export default {
             // console.log('this be the summoner\'s name: ', summonerName);
             this.fetchSummoner(summonerName);
         },
+        handleMatchHistoryClick() {
+            this.fetchSummonerMatchHistory();
+        },
         fetchSummoner(summonerName) {
             this.error = this.summoner = null;
             this.loading = true;
@@ -79,8 +93,9 @@ export default {
                 .then(response => {
                     // this.loading = false;
                     this.summoner = response.data;
-                    // console.log(this.summoner);
+                    console.log(this.summoner);
                     this.encryptId = response.data.id;
+                    this.accountId = response.data.accountId;
                     this.fetchSummonerData(this.encryptId);
                 })
                 .catch(error => {
@@ -104,6 +119,22 @@ export default {
                 this.loading = false;
                 this.error = error.response.data.message || error.message;
                 // console.log(this.error);
+                });
+        },
+        fetchSummonerMatchHistory() {
+            this.error = this.matches = null;
+            this.loading = true;
+            axios
+                .get(`/api/summonerMatchHistory/${this.accountId}`)
+                .then(response => {
+                    this.loading = false;
+                    this.matches = response.data.matches;
+                    console.log('im getting a response: ', this.matches);
+                })
+                .catch(error => {
+                    this.loading = false;
+                    this.error = error.response.data.message || error.message;
+                    console.log(this.error);
                 });
         },
     },
