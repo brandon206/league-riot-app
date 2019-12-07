@@ -1981,6 +1981,8 @@ __webpack_require__.r(__webpack_exports__);
 
 "use strict";
 __webpack_require__.r(__webpack_exports__);
+/* harmony import */ var axios__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! axios */ "./node_modules/axios/index.js");
+/* harmony import */ var axios__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(axios__WEBPACK_IMPORTED_MODULE_0__);
 //
 //
 //
@@ -1992,8 +1994,60 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+
 /* harmony default export */ __webpack_exports__["default"] = ({
-  props: ['matches']
+  props: {
+    matches: {
+      type: Array,
+      "default": []
+    }
+  },
+  created: function created() {
+    this.fetchData(); //   console.log(process.env.MIX_CHAMPION_JSON_URL);
+  },
+  // computed: {
+  //     getImageLink: function(link) {
+  //         return link;
+  //     }
+  // },
+  data: function data() {
+    return {
+      error: null,
+      champions: {},
+      link: "http://ddragon.leagueoflegends.com/cdn/9.19.1/img/champion/"
+    };
+  },
+  methods: {
+    fetchData: function fetchData() {
+      var _this = this;
+
+      this.error = this.champions = null;
+      this.loading = true;
+      axios__WEBPACK_IMPORTED_MODULE_0___default.a.get('/api/champions').then(function (response) {
+        debugger;
+        _this.champions = Object.values(response.data.data).reduce(function (obj, value) {
+          obj[value.key] = value;
+          return obj;
+        }, {});
+        console.log('am i getting anyting?: ', _this.champions); // this.loading = false;
+        // this.champions = Object.values(response.data.data);
+      });
+      console.log(this.champions);
+    }
+  }
 });
 
 /***/ }),
@@ -3029,21 +3083,90 @@ var render = function() {
   var _vm = this
   var _h = _vm.$createElement
   var _c = _vm._self._c || _h
-  return _c(
-    "div",
-    _vm._l(_vm.matches, function(matchData) {
-      return _c("div", { key: matchData.gameId, staticClass: "px-6 py-4" }, [
-        _c("p", [_vm._v(_vm._s(matchData.platformId))]),
-        _vm._v(" "),
-        _c("p", [_vm._v(_vm._s(matchData.champion))]),
-        _vm._v(" "),
-        _c("p", [_vm._v(_vm._s(matchData.role))]),
-        _vm._v(" "),
-        _c("p", [_vm._v(_vm._s(matchData.lane))])
-      ])
-    }),
-    0
-  )
+  return _vm.champions && _vm.matches
+    ? _c(
+        "div",
+        _vm._l(_vm.matches, function(matchData) {
+          return _c(
+            "div",
+            { key: matchData.gameId, staticClass: "px-6 py-4" },
+            [
+              _c(
+                "div",
+                {
+                  staticClass:
+                    "container mx-auto max-w-sm rounded overflow-hidden shadow-lg flex"
+                },
+                [
+                  _c(
+                    "div",
+                    {
+                      staticClass:
+                        "h-48 lg:h-auto lg:w-48 flex-none bg-cover rounded-t lg:rounded-t-none lg:rounded-l text-center overflow-hidden"
+                    },
+                    [
+                      _c(
+                        "div",
+                        { staticClass: "text-gray-900 font-bold text-xl mb-2" },
+                        [
+                          _vm._v(
+                            _vm._s(_vm.champions[matchData.champion]["id"])
+                          )
+                        ]
+                      ),
+                      _vm._v(" "),
+                      _c("img", {
+                        staticClass: "pb-6",
+                        staticStyle: { margin: "0 auto" },
+                        attrs: {
+                          src:
+                            "" +
+                            _vm.link +
+                            _vm.champions[matchData.champion]["image"].full,
+                          alt:
+                            "image" +
+                            _vm.champions[matchData.champion]["image"].full
+                        }
+                      })
+                    ]
+                  ),
+                  _vm._v(" "),
+                  _c(
+                    "div",
+                    {
+                      staticClass:
+                        "bg-white p-4 w-full flex justify-center items-center"
+                    },
+                    [
+                      _c("div", {}, [
+                        _c("p", { staticClass: "text-gray-700 text-base" }, [
+                          _vm._v(_vm._s("Lane: " + matchData.lane))
+                        ]),
+                        _vm._v(" "),
+                        _c("p", { staticClass: "text-gray-700 text-base" }, [
+                          _vm._v(_vm._s(matchData.role + " Queue"))
+                        ]),
+                        _vm._v(" "),
+                        _c(
+                          "button",
+                          {
+                            staticClass:
+                              "bg-blue-500 hover:bg-blue-400 text-white font-bold py-2 px-4 border-b-4 border-blue-700 hover:border-blue-500 rounded",
+                            attrs: { type: "button" }
+                          },
+                          [_vm._v(" Show Stats ")]
+                        )
+                      ])
+                    ]
+                  )
+                ]
+              )
+            ]
+          )
+        }),
+        0
+      )
+    : _vm._e()
 }
 var staticRenderFns = []
 render._withStripped = true

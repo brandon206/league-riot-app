@@ -46,7 +46,6 @@ export default {
             this.$router.go(-1);
         },
         fetchData() {
-            // console.log(`/api/champions/${this.id}`);
             this.error = this.champion = null;
             this.loading = true;
             axios
@@ -54,7 +53,6 @@ export default {
                 .then(response => {
                     this.loading = false;
                     this.champion = Object.values(response.data.data);
-                    console.log(this.champion);
                 });
         },
     },
