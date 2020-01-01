@@ -58,7 +58,7 @@ export default {
   },
     created() {
       this.fetchData();
-      console.log(process.env.MIX_CHAMPION_JSON_URL);
+      // console.log(process.env.MIX_CHAMPION_JSON_URL);
     },
     methods: {
       fetchData() {

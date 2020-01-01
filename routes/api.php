@@ -22,3 +22,4 @@ Route::get('champions/{id}', 'RiotApiController@getChampion');
 Route::get('summoner/{summonerName}', 'RiotApiController@getSummoner');
 Route::get('summonerData/{encryptId}', 'RiotApiController@getSummonerData');
 Route::get('summonerMatchHistory/{accountId}', 'RiotApiController@getSummonerMatchHistory');
+Route::get('summonerSingleMatchData/{matchId}', 'RiotApiController@getSummonerSingleMatchData');

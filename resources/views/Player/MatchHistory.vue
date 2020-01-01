@@ -10,7 +10,7 @@
                     <div class="">
                     <p class="text-gray-700 text-base">{{`Lane: ${matchData.lane}`}}</p>
                     <p class="text-gray-700 text-base">{{`${matchData.role} Queue`}}</p>
-                    <button type="button" class="bg-blue-500 hover:bg-blue-400 text-white font-bold py-2 px-4 border-b-4 border-blue-700 hover:border-blue-500 rounded"> Show Stats </button>
+                    <button type="button" v-on:click="$emit('clickedShowStats', { matchId: matchData.gameId, showSingleMatchStats: true })" class="bg-blue-500 hover:bg-blue-400 text-white font-bold py-2 px-4 border-b-4 border-blue-700 hover:border-blue-500 rounded"> Show Stats </button>
                     </div>
                 </div>
             </div>
@@ -35,6 +35,9 @@ export default {
             error: null,
             champions: {},
             link: process.env.MIX_CHAMPION_JSON_URL,
+            gameId: null,
+            matchObj: {},
+            // showSingleMatchStats: false,
         };
     },
     methods: {

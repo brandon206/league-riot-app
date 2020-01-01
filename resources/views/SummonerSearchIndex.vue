@@ -33,22 +33,31 @@
             </div>
         </div>
         <MatchHistory
-            v-if="matches"
+            v-if="matches && ! singleMatchStatsObj.showSingleMatchStats"
             :matches="matches"
+            @clickedShowStats="handleShowStatsClick"
         >
         </MatchHistory>
+        <SingleMatchData
+            v-if="singleMatchStatsObj.showSingleMatchStats"
+            :singleMatchStatsObj="this.singleMatchStatsObj"
+            :summonerName="this.summonerName"
+        >
+        </SingleMatchData>
     </div>
 </template>
 
 <script>
 import axios from 'axios';
 import SearchBar from './SearchBar';
-import MatchHistory from './MatchHistory';
+import MatchHistory from './Player/MatchHistory';
+import SingleMatchData from './Player/SingleMatchData';
 
 export default {
     components: {
         'SearchBar': SearchBar,
         'MatchHistory': MatchHistory,
+        'SingleMatchData': SingleMatchData,
     },
     data() {
         return {
@@ -58,9 +67,12 @@ export default {
             id: null,
             accountId: null,
             summoner: '',
+            summonerName: '',
             summonerData: {},
             encryptId: '',
             matches: [],
+            // showSingleMatchStats: false,
+            singleMatchStatsObj: {},
             // imageLink: 'http://ddragon.leagueoflegends.com/cdn/img/champion/loading/',
         };
     },
@@ -79,21 +91,26 @@ export default {
         },
         handleSearchClick: function(summonerName) {
             // console.log('this be the summoner\'s name: ', summonerName);
+            this.summonerName = summonerName;
             this.fetchSummoner(summonerName);
         },
         handleMatchHistoryClick() {
             this.fetchSummonerMatchHistory();
         },
+        handleShowStatsClick(obj) {
+            this.showSingleMatchStats = obj.showSingleMatchStats;
+            this.singleMatchStatsObj = obj;
+        },
         fetchSummoner(summonerName) {
             this.error = this.summoner = null;
             this.loading = true;
-            console.log(summonerName);
+            // console.log(summonerName);
             axios
                 .get(`/api/summoner/${summonerName}`)
                 .then(response => {
                     // this.loading = false;
                     this.summoner = response.data;
-                    console.log(this.summoner);
+                    // console.log(this.summoner);
                     this.encryptId = response.data.id;
                     this.accountId = response.data.accountId;
                     this.fetchSummonerData(this.encryptId);
@@ -129,14 +146,31 @@ export default {
                 .then(response => {
                     this.loading = false;
                     this.matches = response.data.matches;
-                    console.log('im getting a response: ', this.matches);
+                    // console.log('im getting a response: ', this.matches);
                 })
                 .catch(error => {
                     this.loading = false;
                     this.error = error.response.data.message || error.message;
-                    console.log(this.error);
+                    // console.log(this.error);
                 });
         },
+        // fetchSummonerSingleMatchData(obj) {
+        //     this.error = null;
+        //     this.loading = true;
+        //     // debugger;
+        //     console.log('Inside Fetching Summoner Single Match Data');
+        //     axios
+        //         .get(`/api/summonerSingleMatchData/${obj.matchId}`)
+        //         .then(response => {
+        //             this.loading = false;
+        //             console.log('im getting a response: ', response);
+        //         })
+        //         .catch(error => {
+        //             this.loading = false;
+        //             this.error = error.response.data.message || error.message;
+        //             console.log(this.error);
+        //         });
+        // },
     },
 }
 </script>
