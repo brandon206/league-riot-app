@@ -19,18 +19,6 @@
           <option value="Assassin"> Assassin</option>
         </select>
       </div>
-      <ChampionItem
-        v-for="champion in champions"
-        :key="champion.id"
-        :champion="champion"
-      />
-      <BasePagination
-      :current-page="currentPage"
-      :page-count="pageCount"
-      class="articles-list__pagination"
-      @nextPage="pageChangeHandle('next')"
-      @previousPage="pageChangeHandle('previous')"
-    />
       <!-- <div v-if="champions" style="text-align: center; display: flex; flex-wrap: wrap; justify-content: center;">
         <div style="width: 25%; box-sizing: border-box;" v-for="champion in filteredChampions" :key=champion.key>
           <div style="width: 90%; margin: 0 auto;" class="gray-400 max-w-sm rounded overflow-hidden shadow-lg">
@@ -51,17 +39,20 @@
           </div>
         </div>
       </div> -->
+      <Pagination v-if="champions" :champions="champions"/>
     </div>
 </template>
 <script>
 import axios from 'axios';
-import ChampionItem from './ChampionItem';
-import BasePagination from './Pagination/BasePagination';
+import Pagination from './Pagination/Pagination'
 
 export default {
-  name: "ChampionsIndex",
+  name: "Champions",
   static: {
     visibleItemsPerPageCount: 2,
+  },
+  components: {
+    'Pagination': Pagination,
   },
   data() {
     return {
@@ -76,10 +67,6 @@ export default {
       currentPage: 1,
       pageCount: 0,
     };
-  },
-  components: {
-    ChampionItem,
-    BasePagination,
   },
     created() {
       this.fetchData();
