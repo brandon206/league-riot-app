@@ -19,7 +19,19 @@
           <option value="Assassin"> Assassin</option>
         </select>
       </div>
-      <div v-if="champions" style="text-align: center; display: flex; flex-wrap: wrap; justify-content: center;">
+      <ChampionItem
+        v-for="champion in champions"
+        :key="champion.id"
+        :champion="champion"
+      />
+      <BasePagination
+      :current-page="currentPage"
+      :page-count="pageCount"
+      class="articles-list__pagination"
+      @nextPage="pageChangeHandle('next')"
+      @previousPage="pageChangeHandle('previous')"
+    />
+      <!-- <div v-if="champions" style="text-align: center; display: flex; flex-wrap: wrap; justify-content: center;">
         <div style="width: 25%; box-sizing: border-box;" v-for="champion in filteredChampions" :key=champion.key>
           <div style="width: 90%; margin: 0 auto;" class="gray-400 max-w-sm rounded overflow-hidden shadow-lg">
             <router-link :to="{ name: 'champions.id.index', params: {id: champion.id} }">
@@ -38,29 +50,54 @@
             </div>
           </div>
         </div>
-      </div>
+      </div> -->
     </div>
 </template>
 <script>
 import axios from 'axios';
+import ChampionItem from './ChampionItem';
+import BasePagination from './Pagination/BasePagination';
 
 export default {
+  name: "ChampionsIndex",
+  static: {
+    visibleItemsPerPageCount: 2,
+  },
   data() {
     return {
       loading: false,
-      champions: null,
+      champions: [],
       error: null,
       search: '',
       link: process.env.MIX_CHAMPION_JSON_URL,
       splashLink: process.env.MIX_CHAMPION_SPLASH_JSON_URL,
       selectedType: 'All',
+      // championItems: [],
+      currentPage: 1,
+      pageCount: 0,
     };
+  },
+  components: {
+    ChampionItem,
+    BasePagination,
   },
     created() {
       this.fetchData();
       // console.log(process.env.MIX_CHAMPION_JSON_URL);
     },
     methods: {
+      async pageChangeHandle(value) {
+        switch (value) {
+          case 'next':
+            this.currentPage += 1
+            break
+          case 'previous':
+            this.currentPage -= 1
+            break
+          default:
+            this.currentPage = value;
+        }
+      },
       fetchData() {
         this.error = this.champions = null;
         this.loading = true;
@@ -69,8 +106,10 @@ export default {
           .then(response => {
             this.loading = false;
             this.champions = Object.values(response.data.data);
+            this.pageCount = Math.ceil(this.champions /  this.$options.static.visibleItemsPerPageCount);
           });
       },
+      
     },
     computed: {
       filteredChampions() {
