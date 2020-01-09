@@ -1959,13 +1959,12 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
       link: "http://ddragon.leagueoflegends.com/cdn/10.1.1/img/champion/",
       splashLink: "http://ddragon.leagueoflegends.com/cdn/img/champion/loading/",
       selectedType: 'All',
-      // championItems: [],
       currentPage: 1,
       pageCount: 0
     };
   },
   created: function created() {
-    this.fetchData(); // console.log(process.env.MIX_CHAMPION_JSON_URL);
+    this.fetchData();
   },
   methods: {
     pageChangeHandle: function () {
@@ -2218,8 +2217,7 @@ __webpack_require__.r(__webpack_exports__);
       champions: {},
       link: "http://ddragon.leagueoflegends.com/cdn/10.1.1/img/champion/",
       gameId: null,
-      matchObj: {} // showSingleMatchStats: false,
-
+      matchObj: {}
     };
   },
   methods: {
@@ -2293,7 +2291,6 @@ __webpack_require__.r(__webpack_exports__);
     };
   },
   mounted: function mounted() {
-    // debugger;
     this.fetchSummonerSingleMatchData(this.singleMatchStatsObj);
   },
   methods: {
@@ -2312,7 +2309,6 @@ __webpack_require__.r(__webpack_exports__);
       });
       this.singleMatchData.teams.forEach(function (team) {
         if (team.teamId === _this.teamId) {
-          debugger;
           _this.result = team.win;
         }
       });
@@ -2321,18 +2317,15 @@ __webpack_require__.r(__webpack_exports__);
     fetchSummonerSingleMatchData: function fetchSummonerSingleMatchData(obj) {
       var _this2 = this;
 
-      // debugger;
       this.error = null;
-      this.loading = true; // debugger;
-      // console.log('Inside Fetching Summoner Single Match Data');
-
+      this.loading = true;
       axios__WEBPACK_IMPORTED_MODULE_0___default.a.get("/api/summonerSingleMatchData/".concat(obj.matchId)).then(function (response) {
         _this2.loading = false;
         _this2.singleMatchData = response.data;
         console.log('im getting a response: ', response);
       })["catch"](function (error) {
         _this2.loading = false;
-        _this2.error = error.response.data.message || error.message; // console.log(this.error);
+        _this2.error = error.response.data.message || error.message;
       });
     }
   }
@@ -2416,7 +2409,6 @@ __webpack_require__.r(__webpack_exports__);
     };
   },
   created: function created() {
-    // console.log(this.$route.params.id);
     this.id = this.$route.params.id;
     this.fetchData();
   },
@@ -2503,10 +2495,6 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
-//
-//
-//
-//
 
 
 
@@ -2529,13 +2517,10 @@ __webpack_require__.r(__webpack_exports__);
       summonerData: {},
       encryptId: '',
       matches: [],
-      // showSingleMatchStats: false,
-      singleMatchStatsObj: {} // imageLink: 'http://ddragon.leagueoflegends.com/cdn/img/champion/loading/',
-
+      singleMatchStatsObj: {}
     };
   },
   created: function created() {
-    // console.log(this.$route.params.id);
     this.id = this.$route.params.id;
   },
   computed: {
@@ -2548,7 +2533,6 @@ __webpack_require__.r(__webpack_exports__);
       return __webpack_require__("./resources/images sync recursive ^\\.\\/.*\\.png$")("./".concat(tier, ".png"));
     },
     handleSearchClick: function handleSearchClick(summonerName) {
-      // console.log('this be the summoner\'s name: ', summonerName);
       this.summonerName = summonerName;
       this.fetchSummoner(summonerName);
     },
@@ -2563,33 +2547,29 @@ __webpack_require__.r(__webpack_exports__);
       var _this = this;
 
       this.error = this.summoner = null;
-      this.loading = true; // console.log(summonerName);
-
+      this.loading = true;
       axios__WEBPACK_IMPORTED_MODULE_0___default.a.get("/api/summoner/".concat(summonerName)).then(function (response) {
-        // this.loading = false;
-        _this.summoner = response.data; // console.log(this.summoner);
-
+        _this.summoner = response.data;
         _this.encryptId = response.data.id;
         _this.accountId = response.data.accountId;
 
         _this.fetchSummonerData(_this.encryptId);
       })["catch"](function (error) {
         _this.loading = false;
-        _this.error = error.response.data.message || error.message; // console.log(this.error);
+        _this.error = error.response.data.message || error.message;
       });
     },
     fetchSummonerData: function fetchSummonerData(encryptId) {
       var _this2 = this;
 
       this.error = this.summonerData = null;
-      this.loading = true; // console.log(encryptId);
-
+      this.loading = true;
       axios__WEBPACK_IMPORTED_MODULE_0___default.a.get("/api/summonerData/".concat(encryptId)).then(function (response) {
         _this2.loading = false;
-        _this2.summonerData = response.data; // console.log(response.data);
+        _this2.summonerData = response.data;
       })["catch"](function (error) {
         _this2.loading = false;
-        _this2.error = error.response.data.message || error.message; // console.log(this.error);
+        _this2.error = error.response.data.message || error.message;
       });
     },
     fetchSummonerMatchHistory: function fetchSummonerMatchHistory() {
@@ -2599,29 +2579,12 @@ __webpack_require__.r(__webpack_exports__);
       this.loading = true;
       axios__WEBPACK_IMPORTED_MODULE_0___default.a.get("/api/summonerMatchHistory/".concat(this.accountId)).then(function (response) {
         _this3.loading = false;
-        _this3.matches = response.data.matches; // console.log('im getting a response: ', this.matches);
+        _this3.matches = response.data.matches;
       })["catch"](function (error) {
         _this3.loading = false;
-        _this3.error = error.response.data.message || error.message; // console.log(this.error);
+        _this3.error = error.response.data.message || error.message;
       });
-    } // fetchSummonerSingleMatchData(obj) {
-    //     this.error = null;
-    //     this.loading = true;
-    //     // debugger;
-    //     console.log('Inside Fetching Summoner Single Match Data');
-    //     axios
-    //         .get(`/api/summonerSingleMatchData/${obj.matchId}`)
-    //         .then(response => {
-    //             this.loading = false;
-    //             console.log('im getting a response: ', response);
-    //         })
-    //         .catch(error => {
-    //             this.loading = false;
-    //             this.error = error.response.data.message || error.message;
-    //             console.log(this.error);
-    //         });
-    // },
-
+    }
   }
 });
 

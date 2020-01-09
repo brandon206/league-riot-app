@@ -42,7 +42,6 @@ export default {
         };
     },
     mounted() {
-        // debugger;
         this.fetchSummonerSingleMatchData(this.singleMatchStatsObj);
     },
     methods: {
@@ -66,11 +65,8 @@ export default {
             return this.result;
         },
         fetchSummonerSingleMatchData(obj) {
-            // debugger;
             this.error = null;
             this.loading = true;
-            // debugger;
-            // console.log('Inside Fetching Summoner Single Match Data');
             axios
                 .get(`/api/summonerSingleMatchData/${obj.matchId}`)
                 .then(response => {
@@ -81,7 +77,6 @@ export default {
                 .catch(error => {
                     this.loading = false;
                     this.error = error.response.data.message || error.message;
-                    // console.log(this.error);
                 }); 
         }
     },

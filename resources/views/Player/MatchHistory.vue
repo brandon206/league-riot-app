@@ -37,7 +37,6 @@ export default {
             link: process.env.MIX_CHAMPION_JSON_URL,
             gameId: null,
             matchObj: {},
-            // showSingleMatchStats: false,
         };
     },
     methods: {

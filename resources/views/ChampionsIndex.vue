@@ -67,14 +67,12 @@ export default {
       link: process.env.MIX_CHAMPION_JSON_URL,
       splashLink: process.env.MIX_CHAMPION_SPLASH_JSON_URL,
       selectedType: 'All',
-      // championItems: [],
       currentPage: 1,
       pageCount: 0,
     };
   },
     created() {
       this.fetchData();
-      // console.log(process.env.MIX_CHAMPION_JSON_URL);
     },
     methods: {
       async pageChangeHandle(value) {

@@ -22,10 +22,6 @@
                     <span class="inline-block bg-gray-200 rounded-full px-3 py-1 text-sm font-semibold text-gray-700 mr-2">{{ `Loses: ${summonerRanks.losses}` }}</span>
                 </div>
                 <div>
-                    <!-- <div >
-                        <svg class="fill-current w-4 h-4 mr-2" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20"><path d="M13 8V2H7v6H2l8 8 8-8h-5zM0 18h20v2H0v-2z"/></svg>
-                        <span>Match History</span>
-                    </div> -->
                     <button type="button" v-on:click="handleMatchHistoryClick" class="bg-blue-800 hover:bg-blue-900 text-white font-bold py-2 px-4 border-b-4 border-blue-900 hover:border-blue-900 rounded">
                         Match History
                     </button>
@@ -71,13 +67,10 @@ export default {
             summonerData: {},
             encryptId: '',
             matches: [],
-            // showSingleMatchStats: false,
             singleMatchStatsObj: {},
-            // imageLink: 'http://ddragon.leagueoflegends.com/cdn/img/champion/loading/',
         };
     },
     created() {
-        // console.log(this.$route.params.id);
         this.id = this.$route.params.id;
     },
     computed: {
@@ -90,7 +83,6 @@ export default {
             return require(`../../resources/images/${tier}.png`);
         },
         handleSearchClick: function(summonerName) {
-            // console.log('this be the summoner\'s name: ', summonerName);
             this.summonerName = summonerName;
             this.fetchSummoner(summonerName);
         },
@@ -104,13 +96,10 @@ export default {
         fetchSummoner(summonerName) {
             this.error = this.summoner = null;
             this.loading = true;
-            // console.log(summonerName);
             axios
                 .get(`/api/summoner/${summonerName}`)
                 .then(response => {
-                    // this.loading = false;
                     this.summoner = response.data;
-                    // console.log(this.summoner);
                     this.encryptId = response.data.id;
                     this.accountId = response.data.accountId;
                     this.fetchSummonerData(this.encryptId);
@@ -118,24 +107,20 @@ export default {
                 .catch(error => {
                 this.loading = false;
                 this.error = error.response.data.message || error.message;
-                // console.log(this.error);
                 });
         },
         fetchSummonerData(encryptId) {
             this.error = this.summonerData = null;
             this.loading = true;
-            // console.log(encryptId);
             axios
                 .get(`/api/summonerData/${encryptId}`)
                 .then(response => {
                     this.loading = false;
                     this.summonerData = response.data;
-                    // console.log(response.data);
                 })
                 .catch(error => {
                 this.loading = false;
                 this.error = error.response.data.message || error.message;
-                // console.log(this.error);
                 });
         },
         fetchSummonerMatchHistory() {
@@ -146,31 +131,12 @@ export default {
                 .then(response => {
                     this.loading = false;
                     this.matches = response.data.matches;
-                    // console.log('im getting a response: ', this.matches);
                 })
                 .catch(error => {
                     this.loading = false;
                     this.error = error.response.data.message || error.message;
-                    // console.log(this.error);
                 });
         },
-        // fetchSummonerSingleMatchData(obj) {
-        //     this.error = null;
-        //     this.loading = true;
-        //     // debugger;
-        //     console.log('Inside Fetching Summoner Single Match Data');
-        //     axios
-        //         .get(`/api/summonerSingleMatchData/${obj.matchId}`)
-        //         .then(response => {
-        //             this.loading = false;
-        //             console.log('im getting a response: ', response);
-        //         })
-        //         .catch(error => {
-        //             this.loading = false;
-        //             this.error = error.response.data.message || error.message;
-        //             console.log(this.error);
-        //         });
-        // },
     },
 }
 </script>
