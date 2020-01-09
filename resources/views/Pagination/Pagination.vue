@@ -10,7 +10,7 @@
                 <p class="text-gray-700 text-base">{{ p.title }}</p>
             </div>
             <div style="width: 90%; margin: 0 auto;" class="gray-400 max-w-sm rounded overflow-hidden shadow-lg">
-            <router-link :to="{ name: 'ps.id.index', params: {id: p.id} }">
+            <router-link :to="{ name: 'champions.id.index', params: {id: p.id} }">
                 <img style="margin: 0 auto;" :src="`${link}` + p.image.full" :alt="`image${p.image.full}`">
             </router-link>
             <div class="px-6 py-4">
