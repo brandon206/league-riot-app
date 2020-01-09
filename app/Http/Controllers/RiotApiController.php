@@ -47,6 +47,18 @@ class RiotApiController extends Controller
         return $body;
     }
 
+    // Gets specific match data
+    public function getSummonerSingleMatchData($matchId) {
+        $client = new Client();
+        $api_key = env('RIOT_API_KEY', 'default_api_key');
+        $response = $client->request('GET', 'https://na1.api.riotgames.com/lol/match/v4/matches/'.$matchId.'?api_key='.$api_key);
+        $statusCode = $response->getStatusCode();
+        $body = $response->getBody()->getContents();
+
+        return $body;
+    }
+
+    // Gets a list of all matches
     public function getSummonerMatchHistory($accountId) {
         $client = new Client();
         $api_key = env('RIOT_API_KEY', 'default_api_key');
