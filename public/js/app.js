@@ -1936,6 +1936,10 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
 //
 //
 //
+//
+//
+//
+//
 
 
 /* harmony default export */ __webpack_exports__["default"] = ({
@@ -1952,7 +1956,7 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
       champions: [],
       error: null,
       search: '',
-      link: "http://ddragon.leagueoflegends.com/cdn/9.19.1/img/champion/",
+      link: "http://ddragon.leagueoflegends.com/cdn/10.1.1/img/champion/",
       splashLink: "http://ddragon.leagueoflegends.com/cdn/img/champion/loading/",
       selectedType: 'All',
       // championItems: [],
@@ -2062,11 +2066,60 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
 /* harmony default export */ __webpack_exports__["default"] = ({
   name: "Pagination",
   data: function data() {
     return {
-      msg: "Champions",
+      headline: "Champions",
       page: 0
     };
   },
@@ -2078,7 +2131,11 @@ __webpack_require__.r(__webpack_exports__);
     size: {
       type: Number,
       required: false,
-      "default": 10
+      "default": 8
+    },
+    link: {
+      type: String,
+      required: true
     }
   },
   methods: {
@@ -2090,12 +2147,20 @@ __webpack_require__.r(__webpack_exports__);
     }
   },
   computed: {
+    isFirstPage: function isFirstPage() {
+      console.log('is first page: ', this.page === 0);
+      return this.page === 0;
+    },
+    isLastPage: function isLastPage() {
+      console.log('is last page: ', this.page >= this.pageCount - 1);
+      return this.page >= this.pageCount - 1;
+    },
     pageCount: function pageCount() {
       var l = this.champions.length,
           s = this.size;
-      return Math.floor(l / s);
+      return Math.ceil(l / s);
     },
-    paginated: function paginated() {
+    paginatedChampions: function paginatedChampions() {
       var start = this.page * this.size,
           end = start + this.size;
       return this.champions.slice(start, end);
@@ -2151,7 +2216,7 @@ __webpack_require__.r(__webpack_exports__);
     return {
       error: null,
       champions: {},
-      link: "http://ddragon.leagueoflegends.com/cdn/9.19.1/img/champion/",
+      link: "http://ddragon.leagueoflegends.com/cdn/10.1.1/img/champion/",
       gameId: null,
       matchObj: {} // showSingleMatchStats: false,
 
@@ -3854,7 +3919,7 @@ var render = function() {
     "div",
     { staticClass: "champions", staticStyle: { margin: "0 auto" } },
     [
-      _c("div", { staticClass: "search-wrapper" }, [
+      _c("div", { staticClass: "search-wrapper inline-block" }, [
         _c("form", { staticClass: "w-full max-w-sm" }, [
           _c("div", { staticClass: "flex items-center" }, [
             _c("input", {
@@ -3883,15 +3948,11 @@ var render = function() {
         ])
       ]),
       _vm._v(" "),
-      _vm.loading
-        ? _c("div", { staticClass: "loading" }, [_vm._v("Loading...")])
-        : _vm._e(),
-      _vm._v(" "),
       _vm.error
         ? _c("div", { staticClass: "error" }, [_vm._v(_vm._s(_vm.error))])
         : _vm._e(),
       _vm._v(" "),
-      _c("div", { staticClass: "inline-block relative w-64" }, [
+      _c("div", { staticClass: "inline-block relative inline-block" }, [
         _c(
           "select",
           {
@@ -3941,8 +4002,14 @@ var render = function() {
         )
       ]),
       _vm._v(" "),
+      _vm.loading
+        ? _c("div", { staticClass: "loading" }, [_vm._v("Loading...")])
+        : _vm._e(),
+      _vm._v(" "),
       _vm.champions
-        ? _c("Pagination", { attrs: { champions: _vm.champions } })
+        ? _c("Pagination", {
+            attrs: { champions: _vm.filteredChampions, link: this.link }
+          })
         : _vm._e()
     ],
     1
@@ -3994,31 +4061,139 @@ var render = function() {
   var _vm = this
   var _h = _vm.$createElement
   var _c = _vm._self._c || _h
-  return _c("div", { staticClass: "hello" }, [
-    _c("h1", [_vm._v(_vm._s(_vm.msg))]),
+  return _c("div", [
+    _c("div", { staticClass: "text-center" }, [
+      _c("h1", { staticClass: "text-gray-800 text-3xl font-bold" }, [
+        _vm._v(_vm._s(_vm.headline))
+      ])
+    ]),
     _vm._v(" "),
     _c(
-      "ul",
-      _vm._l(_vm.paginated, function(p) {
-        return _c("li", { key: p.id }, [_vm._v(_vm._s(p.id))])
+      "div",
+      { staticClass: "text-center flex flex-wrap justify-center" },
+      _vm._l(_vm.paginatedChampions, function(p) {
+        return _c(
+          "div",
+          {
+            key: p.id,
+            staticStyle: { width: "25%", "box-sizing": "border-box" }
+          },
+          [
+            _c("div", { staticClass: "px-6 py-4" }, [
+              _c("div", { staticClass: "font-bold text-xl mb-2" }, [
+                _vm._v(_vm._s(p.id))
+              ]),
+              _vm._v(" "),
+              _c("p", { staticClass: "text-gray-700 text-base" }, [
+                _vm._v(_vm._s(p.title))
+              ])
+            ]),
+            _vm._v(" "),
+            _c(
+              "div",
+              {
+                staticClass:
+                  "gray-400 max-w-sm rounded overflow-hidden shadow-lg",
+                staticStyle: { width: "90%", margin: "0 auto" }
+              },
+              [
+                _c(
+                  "router-link",
+                  {
+                    attrs: { to: { name: "ps.id.index", params: { id: p.id } } }
+                  },
+                  [
+                    _c("img", {
+                      staticStyle: { margin: "0 auto" },
+                      attrs: {
+                        src: "" + _vm.link + p.image.full,
+                        alt: "image" + p.image.full
+                      }
+                    })
+                  ]
+                ),
+                _vm._v(" "),
+                _c("div", { staticClass: "px-6 py-4" }, [
+                  _c("div", { staticClass: "font-bold text-xl mb-2" }, [
+                    _vm._v(_vm._s(p.id))
+                  ]),
+                  _vm._v(" "),
+                  _c("p", { staticClass: "text-gray-700 text-base" }, [
+                    _vm._v(_vm._s(p.title))
+                  ])
+                ]),
+                _vm._v(" "),
+                _c(
+                  "div",
+                  { staticClass: "px-6 py-4" },
+                  _vm._l(p.tags, function(tag) {
+                    return _c("span", { key: tag }, [
+                      _c(
+                        "span",
+                        {
+                          staticClass:
+                            "inline-block bg-gray-200 rounded-full px-3 py-1 text-sm font-semibold text-gray-700 mr-2"
+                        },
+                        [_c("strong", [_vm._v(_vm._s(tag))])]
+                      )
+                    ])
+                  }),
+                  0
+                )
+              ],
+              1
+            )
+          ]
+        )
       }),
       0
     ),
     _vm._v(" "),
-    _c(
-      "button",
-      { attrs: { disabled: _vm.page === 0 }, on: { click: _vm.prevPage } },
-      [_vm._v("Previous")]
-    ),
-    _vm._v(" "),
-    _c(
-      "button",
-      {
-        attrs: { disabled: _vm.page >= _vm.pageCount - 1 },
-        on: { click: _vm.nextPage }
-      },
-      [_vm._v("Next")]
-    )
+    _c("div", { staticClass: "text-center px-6 py-4" }, [
+      _vm.isFirstPage
+        ? _c(
+            "button",
+            {
+              staticClass:
+                "bg-red-500 hover:bg-red-400 text-white font-bold py-2 px-4 border-b-4 border-red-700 hover:border-red-500 rounded opacity-50 cursor-not-allowed",
+              attrs: { type: "button", disabled: _vm.isFirstPage },
+              on: { click: _vm.prevPage }
+            },
+            [_vm._v("Previous")]
+          )
+        : _c(
+            "button",
+            {
+              staticClass:
+                "bg-blue-500 hover:bg-blue-400 text-white font-bold py-2 px-4 border-b-4 border-blue-700 hover:border-blue-500 rounded",
+              attrs: { type: "button" },
+              on: { click: _vm.prevPage }
+            },
+            [_vm._v("Previous")]
+          ),
+      _vm._v(" "),
+      _vm.isLastPage
+        ? _c(
+            "button",
+            {
+              staticClass:
+                "bg-red-500 hover:bg-red-400 text-white font-bold py-2 px-4 border-b-4 border-red-700 hover:border-red-500 rounded opacity-50 cursor-not-allowed",
+              attrs: { type: "button", disabled: _vm.isLastPage },
+              on: { click: _vm.nextPage }
+            },
+            [_vm._v("Next")]
+          )
+        : _c(
+            "button",
+            {
+              staticClass:
+                "bg-blue-500 hover:bg-blue-400 text-white font-bold py-2 px-4 border-b-4 border-blue-700 hover:border-blue-500 rounded",
+              attrs: { type: "button" },
+              on: { click: _vm.nextPage }
+            },
+            [_vm._v("Next")]
+          )
+    ])
   ])
 }
 var staticRenderFns = []
@@ -4263,7 +4438,7 @@ var render = function() {
                 }
               }
             },
-            [_vm._v("\n                Button\n            ")]
+            [_vm._v("\n                Search\n            ")]
           )
         ])
       ]

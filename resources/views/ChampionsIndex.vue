@@ -1,15 +1,14 @@
 <template>
   <div class="champions" style="margin: 0 auto;">
-    <div class="search-wrapper">
+    <div class="search-wrapper inline-block">
       <form class="w-full max-w-sm">
         <div class="flex items-center">
           <input v-model="search" class="bg-white focus:outline-none focus:shadow-outline border border-gray-300 rounded-lg py-2 px-4 block w-full appearance-none leading-normal" type="text" placeholder="Search Champions">
         </div>
       </form>
     </div>
-    <div class="loading" v-if="loading">Loading...</div>
     <div v-if="error" class="error">{{ error }}</div>
-      <div class="inline-block relative w-64">
+      <div class="inline-block relative inline-block">
         <select class="dropdownFilter block appearance-none w-full bg-white border border-gray-400 hover:border-gray-500 px-4 py-2 pr-8 rounded shadow leading-tight focus:outline-none focus:shadow-outline" v-model="selectedType">
           <option value="All"> All</option>
           <option value="Tank"> Tank</option>
@@ -39,7 +38,12 @@
           </div>
         </div>
       </div> -->
-      <Pagination v-if="champions" :champions="champions"/>
+      <div class="loading" v-if="loading">Loading...</div>
+      <Pagination
+        v-if="champions"
+        :champions="filteredChampions"
+        :link="this.link"
+      />
     </div>
 </template>
 <script>
